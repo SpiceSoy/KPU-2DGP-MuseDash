@@ -9,10 +9,21 @@ image_url_dic =  {
         'note-back' : "Note/taikohitcircle.png",
         'note-front' : "Note/taikohitcircleoverlay.png",
     }
+image_cache =  {}
 
-soy_debug.print_console('image_manager',"Image Manager Init")
+soy_debug.print_console('image_manager',"Init")
 
+# 동기적 작업
 def load_image(tag):
-    complete_url = image_base_dir_url + image_url_dic[tag]
-    soy_debug.print_console('image_manager',f"Load Image {tag} at {complete_url} .")
-    return pico2d.load_image(complete_url)
+    if tag in image_url_dic:
+        if tag in image_cache:
+            soy_debug.print_console('image_manager',f"Load Image {tag} at Cache .")
+            ret_image = image_cache[tag]
+        else:
+            complete_url = image_base_dir_url + image_url_dic[tag]
+            soy_debug.print_console('image_manager',f"Load Image {tag} at {complete_url} .")
+            ret_image = pico2d.load_image(complete_url)
+            image_cache[tag] = ret_image
+        return ret_image
+    else:
+        soy_debug.print_console('image_manager',f"Image Dic has NOT Image {tag}")
