@@ -13,20 +13,6 @@ image_url_dic =  {
 soy_debug.print_console('image_manager',"Image Manager Init")
 
 def load_image(tag):
-    soy_debug.print_console('image_manager',f"Load Image {tag} at {image_url_dic[tag]} .")
-    return pico2d.load_image(image_base_dir_url + image_url_dic[tag])
-
-
-if __name__ =="__main__":
-    pico2d.open_canvas()
-    test_image = load_image('note-back-big')
-    while True:
-        events = pico2d.get_events()
-        pico2d.clear_canvas()
-        for evs in events:
-            if evs.key == 27:
-                exit()
-        test_image.draw(100,100)
-        pico2d.update_canvas()
-        pico2d.delay(1/100)
-        pass
+    complete_url = image_base_dir_url + image_url_dic[tag]
+    soy_debug.print_console('image_manager',f"Load Image {tag} at {complete_url} .")
+    return pico2d.load_image(complete_url)
