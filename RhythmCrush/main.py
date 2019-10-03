@@ -2,7 +2,7 @@
 import pico2d
 import time
 
-pico2d.open_canvas()
+pico2d.open_canvas(w=int(1440), h=int(810))
 
 
 start_time = time.time()
