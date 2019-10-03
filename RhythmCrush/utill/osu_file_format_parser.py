@@ -96,7 +96,7 @@ line_parse_func = {
 }
 
 
-def parse_file(text_data):
+def parse_map_text(text_data):
     result = MusicNoteMap()
     line_context = None
     while True:
@@ -121,10 +121,13 @@ def parse_file(text_data):
     return result
 
 
+def load_map_source(url):
+    return parse_map_text(open(url, 'r', encoding='UTF8'))
+
+
 # 단위 테스트 코드
 if __name__ == "__main__":
     debug_url = os.path.abspath(
         "../Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
-    text_data = open(debug_url, 'r', encoding='UTF8')
-    result = parse_file(text_data)
-    print(str(result))
+    debug_result = load_map_source(debug_url)
+    print(str(debug_result))
