@@ -3,7 +3,8 @@
 
 import pico2d
 import time
-from Interface.Interface import IUpdatableObject
+from ..interface import IUpdatableObject
+
 
 class Music(IUpdatableObject):
     def __init__(self,url = None):

@@ -1,10 +1,13 @@
 import time
 
+
 def tick_to_sec(tick):
     return tick * 1000
 
+
 def sec_to_tick(sec):
     return sec / 1000.0
+
 
 class Timer:
     def __init__(self):
