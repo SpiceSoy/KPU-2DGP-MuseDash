@@ -1,7 +1,9 @@
 debug_flag = {
     'all': True,
-    'image_manager': True,
-    'parse_file': False
+    'image_manager': False,
+    'parse_file': False,
+    'note': False,
+    'note-calc': False
    }
 
 
