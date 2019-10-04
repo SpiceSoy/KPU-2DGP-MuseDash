@@ -1,19 +1,14 @@
-# 메인 코드 : Canvas 관리
-import pico2d
+# 메인 코드
 import time
 
-pico2d.open_canvas(w=int(1440), h=int(810))
+from RhythmCrush import framework
 
+works = framework.Framework()
 
-start_time = time.time()
+works.start()
+delta_time = time.time()
 
-while True:
-    events = pico2d.get_events()
-    pico2d.clear_canvas()
-    for evs in events:
-        if evs.key == 27:
-            exit()
-    pico2d.debug_print(str(time.time() - start_time))
-    pico2d.update_canvas()
-    pico2d.delay(1/100)
-    pass
+while works.is_active:
+    delta_time = time.time() - delta_time
+    works.update(delta_time)
+    works.draw()
