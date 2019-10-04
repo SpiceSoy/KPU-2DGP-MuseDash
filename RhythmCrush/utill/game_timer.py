@@ -2,11 +2,11 @@ import time
 
 
 def tick_to_sec(tick):
-    return tick * 1000
+    return tick / 1000
 
 
 def sec_to_tick(sec):
-    return sec / 1000.0
+    return sec * 1000.0
 
 
 class Timer:
@@ -18,10 +18,10 @@ class Timer:
         self.pause_duration = 0
 
     def get_time_sec(self):
-        return (time.time() - self.game_start_time) - self.pause_duration
+        return (time.time() - self.start_time) - self.pause_duration
 
     def get_time_tick(self):
-        return sec_to_tick(self.get_game_time_sec())
+        return sec_to_tick(self.get_time_sec())
 
     def start(self):
         self.start_time = time.time()
@@ -34,11 +34,11 @@ class Timer:
         self.is_active = False
 
     def pause(self):
-        if self.is_active == True and self.is_pause == False:
+        if self.is_active is True and self.is_pause is False:
             self.pause_time = time.time()
             self.is_pause = True
 
-    def unpause(self):
-        if self.is_active == True and self.is_pause == True:
+    def resume(self):
+        if self.is_active is True and self.is_pause is True:
             self.pause_duration = self.pause_duration + (time.time() - self.pause_time)
             self.is_pause = False
