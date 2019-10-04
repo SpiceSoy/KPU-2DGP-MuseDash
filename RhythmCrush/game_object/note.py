@@ -1,27 +1,34 @@
 import pico2d
+import parse
 
 from ..utill import image_manager
 from ..utill import game_timer
 
 from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
+from RhythmCrush import debug
 
 note_type_dic = {'normal': 'note-back-big'}
 
 
 class Note(IUpdatableObject, IDrawableObject):
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
-                 speed=10, clip_x=1440, clip_y=810, line_x=100, line_y=0):
-        """
-        :type music_timer: game_timer.Timer
-        """
+                 speed=1, clip_x=1440, clip_y=810, line_x=100, line_y=405):
         # 여기부터
-        self.x = x
-        self.y = y
-        self.time = time
-        self.note_type = note_type
-        self.hit_sound = hit_sound
-        self.extras = extras
+        self.x = int(x)
+        self.y = int(y)
+        self.time = int(time)
+        self.note_type = int(note_type)
+        self.hit_sound = int(hit_sound)
+        extra_zero = extras[0]
+        if extras[0].find(',') is -1:
+            self.end_time = 0
+        else:
+            result = parse.parse("{},{}", extra_zero)
+            self.end_time = int(result[0])
+            extra_zero = result[1]
+
+        self.extras = (int(extra_zero), int(extras[1]), int(extras[2]), int(extras[3]))
         # 여기까지는 파일 포맷 그대로
 
         self.music_timer = music_timer
@@ -37,10 +44,11 @@ class Note(IUpdatableObject, IDrawableObject):
         pass
 
     def calculate_current_position(self):
-        current_music_tick = self.music_timer.get_timer_tick()
-        remain_value = current_music_tick - self.time
+        current_music_tick = self.music_timer.get_time_tick()
+        remain_value = self.time - current_music_tick
+        debug.print_console("note-calc", f"Remain Value is {remain_value}")
         self.x = self.line_x + remain_value * self.speed
-        self.y = self.y
+        self.y = self.line_y
         pass
 
     def set_note_speed(self, speed):
@@ -57,5 +65,10 @@ class Note(IUpdatableObject, IDrawableObject):
     def draw(self):
         padding = 200
         if -padding <= self.x <= self.clip_x + padding and -padding <= self.y <= self.clip_y + padding:
-            self.image.draw(self, self.x, self.y)
+            self.image.draw(self.x, self.y)
+            debug.print_console("note", f"Drawing Note")
+            # debug.print_console("note", f"Drawing at {self.x} , {self.y}")
+        else:
+            debug.print_console("note", f"Clipping Note")
+            # debug.print_console("note", f"Clip at {self.x} , {self.y}")
         pass
