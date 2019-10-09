@@ -11,3 +11,5 @@ Python 3.7.4 (64bit) / Windows
 pico2d, parse
 
 이슈는 메모장 비슷하게 사용
+
+![일정표](https://github.com/SpiceSoy/KPU-2DGP-RhythmCrush/blob/master/static/cal.png?raw=true)
