@@ -7,6 +7,7 @@ class ImageController(IUpdatableObject):
     def __init__(self, image: pico2d.Image):
         self.animator = None
         self.speed = 1
+        self.image = image
 
     def add_animator(self, animator: Animator):
         self.animator = animator
@@ -36,4 +37,4 @@ class ImageController(IUpdatableObject):
 
     def update(self, delta_time):
         if self.animator is not None:
-            self.animator.update(self, delta_time * self.speed)
+            self.animator.update(delta_time * self.speed)
