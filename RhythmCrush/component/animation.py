@@ -64,7 +64,7 @@ class Animator(IUpdatableObject):
 
     def change_current_animation(self, key):
         current = self.sub_animations[self.current_key]
-        if key is not None:
+        if current.get_next() is not None:
             current.reset()
             if key is not "repeat":
                 self.current_key = key
