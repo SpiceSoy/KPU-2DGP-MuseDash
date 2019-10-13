@@ -60,15 +60,11 @@ class Note(IUpdatableObject, IDrawableObject):
 
     def update(self, delta_time):
         self.calculate_current_position()
-        pass
+
+    def is_in_clipped(self):
+        padding = 200
+        return -padding <= self.x <= self.clip_x + padding and -padding <= self.y <= self.clip_y + padding
 
     def draw(self):
-        padding = 200
-        if -padding <= self.x <= self.clip_x + padding and -padding <= self.y <= self.clip_y + padding:
-            self.image.draw(self.x, self.y)
-            debug.print_console("note", f"Drawing Note")
-            # debug.print_console("note", f"Drawing at {self.x} , {self.y}")
-        else:
-            debug.print_console("note", f"Clipping Note")
-            # debug.print_console("note", f"Clip at {self.x} , {self.y}")
-        pass
+        self.image.draw(self.x, self.y)
+

@@ -17,6 +17,7 @@ class GameMap(IUpdatableObject, IDrawableObject):
         self.music = Music()
         self.map = MusicNoteMap()
         self.timer = Timer()
+        self.start_index = 0
         if music_tag is not None:
             self.load(music_tag)
         pass
@@ -25,6 +26,7 @@ class GameMap(IUpdatableObject, IDrawableObject):
     def load(self, music_tag):
         self.map = load_map_source(music_tag)
         self.music.load(music_tag + "/../" + self.map.get_props("AudioFilename"))
+        self.start_index = 0
         for note in self.map.get_hit_object():
             self.note_list.append(
                 Note(
@@ -37,6 +39,12 @@ class GameMap(IUpdatableObject, IDrawableObject):
     def start(self):
         self.timer.start()
         self.music.start()
+        self.start_index = 0
+        self.is_active = True
+
+    def resume(self):
+        self.timer.resume()
+        self.music.resume()
         self.is_active = True
 
     def pause(self):
@@ -44,15 +52,38 @@ class GameMap(IUpdatableObject, IDrawableObject):
         self.music.pause()
         self.is_active = False
 
+    def stop(self):
+        self.timer.stop()
+        self.music.stop()
+        self.is_active = False
+
     def update(self, delta_time):
         if self.is_active:
-            for note in self.note_list:
+            for i in range(self.start_index, len(self.note_list)):
+                note = self.note_list[i]
                 note.update(delta_time)
+                if note.time - self.music.timer.get_time_tick() < 0:
+                    self.start_index = i
+
+            # for note in self.note_list:
+            #     note.update(delta_time)
 
     def draw(self):
         if self.is_active:
-            for note in self.note_list:
-                note.draw()
-    
+            # import pico2d
+            # pico2d.debug_print("start_index = " + str(self.start_index))
+            for i in range(self.start_index, len(self.note_list)):
+                note = self.note_list[i]
+                if note.is_in_clipped():
+                    note.draw()
+                else:
+                    if note.time - self.music.timer.get_time_tick() > 100:
+                        break
+                    # break
+            # for note in self.note_list:
+            #     if note.is_in_clipped():
+            #         note.draw()
+            #     else:
+            #         break
 
 
