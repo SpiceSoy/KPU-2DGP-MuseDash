@@ -8,9 +8,8 @@ class SubAnimation(IUpdatableObject):
         self.frame_csr = 0
         self.frame_time = float(0.0)
         self.next = next
-        return self
 
-    def add_frame(self, u, v, w, h, sec=float(0.05)):
+    def add_frame(self, u, v, w, h, sec=float(0.16)):
         self.frame_buffer.append((u, v, w, h, sec))
         return self
 
@@ -20,9 +19,6 @@ class SubAnimation(IUpdatableObject):
         sec = self.frame_buffer[-1][4]
         self.frame_buffer.append((u, v, w, h, sec))
         return self
-
-    def change_speed(self, speed):
-        self.speed = speed
 
     def get_frame(self, index):
         return self.frame_buffer[index]
@@ -38,12 +34,13 @@ class SubAnimation(IUpdatableObject):
         return self.frame_buffer[min(self.frame_csr, len(self.frame_buffer)-1)]
 
     def is_end(self):
-        return self.frame_csr > len(self.frame_buffer)
+        return self.frame_csr >= len(self.frame_buffer)
 
     def get_next(self):
         return self.next
 
     def reset(self):
+        self.frame_csr = 0
         self.frame_time = 0
 
 
@@ -70,7 +67,7 @@ class Animator(IUpdatableObject):
                 self.current_key = key
 
     def get_current_sub_animation(self):
-        return self.sub_animations[self.current_key].get_frame()
+        return self.sub_animations[self.current_key].get_current_animation()
 
     def update(self, delta_time):
         current = self.sub_animations[self.current_key]
