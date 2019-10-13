@@ -8,6 +8,7 @@ image_url_dic = {
         'note-front-big': "Note/taikobigcircleoverlay.png",
         'note-back': "Note/taikohitcircle.png",
         'note-front': "Note/taikohitcircleoverlay.png",
+        'player-trex': "Char/t_rex_sprite.png"
     }
 
 image_cache = {}
