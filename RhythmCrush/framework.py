@@ -22,8 +22,6 @@ class Framework(IUpdatableObject, IDrawableObject):
         print(self.w)
         print(self.h)
         pico2d.open_canvas(self.w, self.h)
-        import os
-        print(os.listdir())
         self.game_map.load("Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
         self.game_map.start()
 
