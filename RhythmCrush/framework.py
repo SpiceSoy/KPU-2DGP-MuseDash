@@ -4,6 +4,8 @@ import pico2d
 from .interface import IUpdatableObject, IDrawableObject
 from .game_object import game_map
 
+from .game_object.player_object import Player
+
 
 class Framework(IUpdatableObject, IDrawableObject):
     def __init__(self, w=int(1440), h=int(810), start=False):
@@ -11,6 +13,7 @@ class Framework(IUpdatableObject, IDrawableObject):
         self.h = h
         self.is_active = start
         self.game_map = game_map.GameMap()
+
         if start is True:
             self.start()
 
@@ -25,6 +28,10 @@ class Framework(IUpdatableObject, IDrawableObject):
         self.game_map.load("Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
         self.game_map.start()
 
+        self.player = Player()
+        self.player.x = 100
+        self.player.y = 400
+
     def handle_events(self):
         events = pico2d.get_events()
         for event in events:
@@ -36,10 +43,12 @@ class Framework(IUpdatableObject, IDrawableObject):
     def update(self, delta_time):
         self.handle_events()
         self.game_map.update(delta_time)
+        self.player.update(delta_time)
         pass
 
     def draw(self):
         pico2d.clear_canvas()
         self.game_map.draw()
+        self.player.draw()
         pico2d.update_canvas()
         pass
