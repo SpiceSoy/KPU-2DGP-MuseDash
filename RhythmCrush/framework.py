@@ -1,4 +1,5 @@
 # 메인 프레임워크
+import time
 from .utill.input_manager import *
 from RhythmCrush.game_scene import game_map
 
