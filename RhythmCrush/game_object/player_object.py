@@ -37,5 +37,10 @@ class Player(IUpdatableObject, IDrawableObject):
         pass
 
     def handle_input(self, events):
-        # for event in events:
+        for event in events:
+            if event.type == pico2d.SDL_KEYDOWN:
+                if event.key == pico2d.SDLK_SPACE:
+                    self.image_controller.animator.change_current_animation("run")
+                elif event.key == pico2d.SDLK_n:
+                    self.image_controller.animator.change_current_animation("default")
         pass

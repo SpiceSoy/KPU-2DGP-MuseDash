@@ -39,6 +39,7 @@ class Framework(IUpdatableObject, IDrawableObject):
                 self.is_active = False
             elif event.type is pico2d.SDL_KEYDOWN and event.key is pico2d.SDLK_ESCAPE:
                 self.is_active = False
+        self.player.handle_input(events)
 
     def update(self, delta_time):
         self.handle_events()
