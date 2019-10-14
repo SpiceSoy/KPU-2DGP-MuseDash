@@ -22,9 +22,13 @@ class CallChain:
 
 
 class InputHandlerManager:
-    def __init__(self, framework : Framework):
+    def __init__(self, framework: Framework):
         self.last_id = 0
         self.framework = framework
+        self.call_chain_dict = {}
+
+    def reset(self):
+        self.last_id = 0
         self.call_chain_dict = {}
 
     def alloc_id(self):

@@ -6,7 +6,7 @@ from ..utill import game_timer
 
 from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
-from RhythmCrush import debug
+from .. import debug
 
 note_type_dic = {'normal': 'note-back-big'}
 
