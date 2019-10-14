@@ -1,31 +1,24 @@
-#자료형 저장 하고 관리해주는 클래스
+from ..game_scene.base_scene import *
 
-from .game_music import Music
-from .note import Note
+from ..game_object.game_music import Music
+from ..game_object.note import Note
+
 from ..utill.osu_file_format_parser import *
-from ..utill.game_timer import *
-from ..interface import IUpdatableObject
-from ..interface import IDrawableObject
-
-from RhythmCrush import debug
 
 
-class GameMap(IUpdatableObject, IDrawableObject):
-    def __init__(self, music_tag=None):
-        self.is_active = False
+class NotePlayScene(BaseScene):
+    def __init__(self, framework: Framework, music_tag):
+        super().__init__(framework)
         self.note_list = []
         self.music = Music()
         self.map = MusicNoteMap()
-        self.timer = Timer()
         self.start_index = 0
-        if music_tag is not None:
-            self.load(music_tag)
-        pass
-    
+        self.music_tag = music_tag
+
     # 일단 Text URL 받게 설정
-    def load(self, music_tag):
-        self.map = load_map_source(music_tag)
-        self.music.load(music_tag + "/../" + self.map.get_props("AudioFilename"))
+    def load(self):
+        self.map = load_map_source(self.music_tag)
+        self.music.load(self.music_tag + "/../" + self.map.get_props("AudioFilename"))
         self.start_index = 0
         for note in self.map.get_hit_object():
             self.note_list.append(
@@ -37,25 +30,21 @@ class GameMap(IUpdatableObject, IDrawableObject):
             )
 
     def start(self):
-        self.timer.start()
+        super().start()
         self.music.start()
         self.start_index = 0
-        self.is_active = True
 
     def resume(self):
-        self.timer.resume()
+        super().start()
         self.music.resume()
-        self.is_active = True
 
     def pause(self):
-        self.timer.pause()
+        super().start()
         self.music.pause()
-        self.is_active = False
 
     def stop(self):
-        self.timer.stop()
+        super().stop()
         self.music.stop()
-        self.is_active = False
 
     def update(self, delta_time):
         if self.is_active:
