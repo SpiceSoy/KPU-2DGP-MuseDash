@@ -1,7 +1,6 @@
 import enum
 import pico2d
-from ..framework import *
-
+from functools import partial
 
 class CallChain:
     def __init__(self):
@@ -17,12 +16,12 @@ class CallChain:
         return key in self.chain
 
     def execute(self, event):
-        for key, func in self.chain:
+        for func in self.chain.values():
             func(event)
 
 
 class InputHandlerManager:
-    def __init__(self, framework: Framework):
+    def __init__(self, framework):
         self.last_id = 0
         self.framework = framework
         self.call_chain_dict = {}
@@ -44,18 +43,19 @@ class InputHandlerManager:
 
     def del_handler(self, key, event_type=None):
         if event_type is not None:
-            for dict_key, chain in self.call_chain_dict:
+            for dict_key, chain in self.call_chain_dict.items():
                 if chain.is_in(key):
                     chain.del_chain(key)
         else:
             self.call_chain_dict[event_type].del_chain(key)
 
     def default_event_handle(self, event):
-        if event.type is pico2d.SDL_QUIT:
+        if event.type == pico2d.SDL_QUIT:
             self.framework.is_active = False
 
     def handle_event(self):
         events = pico2d.get_events()
         for event in events:
             if event.type in self.call_chain_dict:
-                self.call_chain_dict[event.type].excute(event)
+                self.call_chain_dict[event.type].execute(event)
+            self.default_event_handle(event)
