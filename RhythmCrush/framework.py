@@ -11,20 +11,17 @@ class Framework:
         self.is_active = False
         self.prev_time = 0
         self.now_time = 0
-        self.game_scene = game_map.GameMap()
+        self.game_scene = game_map.NotePlayScene(self, "Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
         self.input_manager = InputHandlerManager(self)
+        self.input_manager.add_handler(pico2d.SDL_KEYDOWN, self.key_end_handler(pico2d.SDLK_ESCAPE))
 
     def start(self):
         self.is_active = True
         print(self.w)
         print(self.h)
         pico2d.open_canvas(self.w, self.h)
-        # self.game_scene.load("Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
-        # self.game_scene.start()
-
-        # self.player = Player()
-        # self.player.x = 100
-        # self.player.y = 400
+        self.game_scene.load()
+        self.game_scene.start()
         self.prev_time = time.time()
         self.now_time = time.time()
 
@@ -38,11 +35,18 @@ class Framework:
 
     def update(self, delta_time):
         self.input_manager.handle_event()
-        self.game_map.update(delta_time)
-        self.player.update(delta_time)
+        self.game_scene.update(delta_time)
+        # self.player.update(delta_time)
 
     def draw(self):
         pico2d.clear_canvas()
-        self.game_map.draw()
-        self.player.draw()
+        self.game_scene.draw()
+        # self.player.draw()
         pico2d.update_canvas()
+
+    def key_end_handler(self, key):
+        def ret(event):
+            if event.key == key:
+                self.is_active = False
+            pass
+        return ret

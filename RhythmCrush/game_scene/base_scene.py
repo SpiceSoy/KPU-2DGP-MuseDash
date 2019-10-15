@@ -1,13 +1,12 @@
 from ..utill.game_timer import *
 from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
-from ..framework import *
 
 from .. import debug
 
 
 class BaseScene(IUpdatableObject, IDrawableObject):
-    def __init__(self, framework: Framework):
+    def __init__(self, framework):
         self.framework = framework
         self.is_active = False
         self.timer = Timer()

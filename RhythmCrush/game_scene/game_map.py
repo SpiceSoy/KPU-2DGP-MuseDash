@@ -2,12 +2,13 @@ from ..game_scene.base_scene import *
 
 from ..game_object.game_music import Music
 from ..game_object.note import Note
+from ..game_object.player_object import  Player
 
 from ..utill.osu_file_format_parser import *
 
 
 class NotePlayScene(BaseScene):
-    def __init__(self, framework: Framework, music_tag):
+    def __init__(self, framework, music_tag):
         super().__init__(framework)
         self.note_list = []
         self.music = Music()
@@ -29,6 +30,11 @@ class NotePlayScene(BaseScene):
                 )
             )
 
+        self.player = Player()
+        self.player.x = 100
+        self.player.y = 400
+        self.player.post_handler(self.framework.input_manager)
+
     def start(self):
         super().start()
         self.music.start()
@@ -48,6 +54,8 @@ class NotePlayScene(BaseScene):
 
     def update(self, delta_time):
         if self.is_active:
+            self.player.update(delta_time)
+
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
                 note.update(delta_time)
@@ -59,6 +67,8 @@ class NotePlayScene(BaseScene):
 
     def draw(self):
         if self.is_active:
+            self.player.draw()
+
             # import pico2d
             # pico2d.debug_print("start_index = " + str(self.start_index))
             for i in range(self.start_index, len(self.note_list)):
