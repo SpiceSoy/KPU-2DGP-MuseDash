@@ -1,8 +1,8 @@
 from ..component.animation import *
 from ..component.image_controller import *
 from ..interface import IUpdatableObject, IDrawableObject
-from ..utill import image_manager
-
+from ..utill import image_manager, input_manager
+from .. import handler_set
 
 # 애니메이션 및 입력 테스트용
 class Player(IUpdatableObject, IDrawableObject):
@@ -27,6 +27,23 @@ class Player(IUpdatableObject, IDrawableObject):
 
         animator.change_current_animation("run")
         self.image_controller.add_animator(animator)
+
+    def post_handler(self, input_handler: input_manager.InputHandlerManager):
+        def change_run():
+            self.image_controller.animator.change_current_animation("run")
+
+        def change_def():
+            self.image_controller.animator.change_current_animation("default")
+
+        input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_n, change_def)
+        )
+
+        input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_SPACE, change_run)
+        )
 
     def draw(self):
         self.image_controller.draw(self.x, self.y)
