@@ -36,6 +36,12 @@ class Player(IUpdatableObject, IDrawableObject):
         def change_def():
             self.image_controller.animator.change_current_animation("default")
 
+        def change_up():
+            self.image_controller.animator.change_current_animation("up")
+
+        def change_down():
+            self.image_controller.animator.change_current_animation("down")
+
         input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_n, change_def)
@@ -44,6 +50,16 @@ class Player(IUpdatableObject, IDrawableObject):
         input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_SPACE, change_run)
+        )
+
+        input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_UP, change_up)
+        )
+
+        input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_DOWN, change_down)
         )
 
     def draw(self):

@@ -29,8 +29,23 @@ def load_player():
     move_anim.add_frame(2295, 204 - 147, 132, 141)
     move_anim.add_frame_other_position(2427, 204 - 147)
 
+    move_anim = SubAnimation("repeat")
+    move_anim.add_frame(2295, 204 - 147, 132, 141)
+    move_anim.add_frame_other_position(2427, 204 - 147)
+
+    up_anim = SubAnimation("run")
+    up_anim.add_frame(2902, 204 - 147, 222, 141, 0.05)
+    up_anim.add_frame(2295, 204 - 147, 132, 141, 0.1)
+
+    down_anim = SubAnimation("run")
+    down_anim.add_frame(2295, 204 - 147, 132, 141, 0.05)
+    down_anim.add_frame(2902, 204 - 147, 222, 141, 0.1)
+
+
     animator.add_sub_animation("default", default_anim)
     animator.add_sub_animation("run", move_anim)
+    animator.add_sub_animation("up", up_anim)
+    animator.add_sub_animation("down", down_anim)
 
     animator.change_current_animation("run")
 
