@@ -1,3 +1,4 @@
+import random
 from ..interface import IUpdatableObject
 
 
@@ -82,6 +83,14 @@ class Animator(IUpdatableObject):
     def reset_frame_info(self):
         self.frame_csr = 0
         self.frame_time = float(0.0)
+
+    def randomize_frame_time(self):
+        sub = self.get_current_sub_animation()
+        self.frame_time = random.randint(0, self.get_current_sub_animation_frame()[4] * 1000) / 1000
+
+    def randomize_frame_csr(self):
+        sub = self.get_current_sub_animation()
+        self.frame_csr = random.randint(0, len(sub.frame_buffer)-1)
 
     def reset_all(self, first_key=None):
         self.reset_frame_info()

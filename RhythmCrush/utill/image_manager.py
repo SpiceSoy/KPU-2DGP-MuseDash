@@ -30,7 +30,11 @@ def load_animator(tag):
         return None
 
 
-def get_image_controller(tag):
+def get_image_controller(tag, randomize_csr=False, randomize_time=False):
     result = ImageController(load_image(tag))
     result.add_animator(load_animator(tag))
+    if randomize_csr:
+        result.animator.randomize_frame_csr()
+    if randomize_time:
+        result.animator.randomize_frame_time()
     return result
