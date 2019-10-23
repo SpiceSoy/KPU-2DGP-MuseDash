@@ -7,7 +7,11 @@ image_url_dic = {
         'note-front-big': "Note/taikobigcircleoverlay.png",
         'note-back': "Note/taikohitcircle.png",
         'note-front': "Note/taikohitcircleoverlay.png",
-        'player-trex': "Char/t_rex_sprite.png"
+        'player-trex': "Char/t_rex_sprite.png",
+        'note-don': "Char/t_rex_sprite.png",
+        'note-big-don': "Note/taikohitcircle.png",
+        'note-kat': "Char/t_rex_sprite.png",
+        'note-big-kat': "Note/taikohitcircle.png"
     }
 
 image_cache = {}
@@ -33,4 +37,40 @@ def load_player():
     animators['player-trex'] = animator
     pass
 
+
+def load_don():
+    animator = Animator()
+    # 기본 서있기
+    # 이동하기
+    move_anim = SubAnimation("repeat")
+    move_anim.add_frame(402, 204 - 126, 138, 121)
+    move_anim.add_frame_other_position(540, 204 - 126)
+    animator.add_sub_animation("run", move_anim)
+
+    animator.change_current_animation("run")
+
+    animators['note-don'] = animator
+    pass
+
+
+def load_kat():
+    animator = Animator()
+    # 기본 서있기
+    # 이동하기
+    move_anim = SubAnimation("repeat")
+    move_anim.add_frame(684, 204 - 111, 51, 105,2100000)
+    move_anim.add_frame_other_position(684 + 1 * 51, 204 - 111)
+    move_anim.add_frame_other_position(684 + 2 * 51, 204 - 111)
+    move_anim.add_frame_other_position(684 + 3 * 51, 204 - 111)
+    move_anim.add_frame_other_position(684 + 4 * 51, 204 - 111)
+    move_anim.add_frame_other_position(684 + 5 * 51, 204 - 111)
+    animator.add_sub_animation("run", move_anim)
+
+    animator.change_current_animation("run")
+
+    animators['note-kat'] = animator
+    pass
+
 load_player()
+load_don()
+load_kat()
