@@ -15,6 +15,7 @@ class NotePlayScene(BaseScene):
         self.map = MusicNoteMap()
         self.start_index = 0
         self.music_tag = music_tag
+        self.extra_update_count = 5
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -53,24 +54,23 @@ class NotePlayScene(BaseScene):
         self.music.stop()
 
     def update(self, delta_time):
+        count = self.extra_update_count
         if self.is_active:
             self.player.update(delta_time)
 
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
-                note.update(delta_time)
+                if note.update(delta_time) is False:
+                    count -= 1
                 if note.time - self.music.timer.get_time_tick() < 0:
                     self.start_index = i
-
-            # for note in self.note_list:
-            #     note.update(delta_time)
+                if count < 0:
+                    break;
 
     def draw(self):
         if self.is_active:
             self.player.draw()
 
-            # import pico2d
-            # pico2d.debug_print("start_index = " + str(self.start_index))
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
                 if note.is_in_clipped():
@@ -78,11 +78,3 @@ class NotePlayScene(BaseScene):
                 else:
                     if note.time - self.music.timer.get_time_tick() > 100:
                         break
-                    # break
-            # for note in self.note_list:
-            #     if note.is_in_clipped():
-            #         note.draw()
-            #     else:
-            #         break
-
-
