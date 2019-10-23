@@ -25,7 +25,7 @@ class ImageController(IUpdatableObject):
         if self.animator is None:
             self.image.draw(x, y, w, h)
         else:
-            frame = self.animator.get_current_sub_animation()
+            frame = self.animator.get_current_sub_animation_frame()
             self.image.clip_draw(frame[0], frame[1], frame[2], frame[3], x, y, w, h)
 
     def composite_draw(self, rad, flip, x, y, w=None, h=None):
