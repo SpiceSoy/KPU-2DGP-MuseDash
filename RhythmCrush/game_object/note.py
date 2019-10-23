@@ -12,6 +12,8 @@ note_type_dic = {'normal': 'note-back-big'}
 
 
 class Note(IUpdatableObject, IDrawableObject):
+    note_image = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
+
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
                  speed=1, clip_x=1440, clip_y=810, line_x=100, line_y=405):
         # 여기부터
