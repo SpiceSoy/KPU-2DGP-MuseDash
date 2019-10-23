@@ -8,12 +8,11 @@ from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
 from .. import debug
 
-note_type_dic = {'normal': 'note-back-big'}
-
+note_type_dic = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
+randomize_note_csr = {0: True, 4: False, 8: True, 12: False}
+randomize_note_time = {0: True, 4: False, 8: False, 12: False}
 
 class Note(IUpdatableObject, IDrawableObject):
-    note_image = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
-
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
                  speed=1, clip_x=1440, clip_y=810, line_x=100, line_y=405):
         # 여기부터
@@ -40,9 +39,10 @@ class Note(IUpdatableObject, IDrawableObject):
         self.clip_y = clip_y
         self.line_x = line_x
         self.line_y = line_y
+        self.update_start_time = 5
         # TODO 실제 들어오는 Type 값에 맞춰서 변경 필요
         # self.image = image_manager.load_image(note_type_dic[note_type])
-        self.image = image_manager.load_image(note_type_dic['normal'])
+        self.image = image_manager.get_image_controller(note_type_dic[self.hit_sound], randomize_note_csr[self.hit_sound], randomize_note_time[self.hit_sound])
         pass
 
     def calculate_current_position(self):
@@ -51,7 +51,7 @@ class Note(IUpdatableObject, IDrawableObject):
         debug.print_console("note-calc", f"Remain Value is {remain_value}")
         self.x = self.line_x + remain_value * self.speed
         self.y = self.line_y
-        pass
+        return self.update_start_time > remain_value
 
     def set_note_speed(self, speed):
         self.speed = speed
@@ -60,8 +60,13 @@ class Note(IUpdatableObject, IDrawableObject):
         self.clip_x = size_x
         self.clip_y = size_y
 
+    def set_update_start_time(self, time):
+        self.update_start_time = time
+
     def update(self, delta_time):
-        self.calculate_current_position()
+        will_continue = self.calculate_current_position()
+        self.image.update(delta_time)
+        return will_continue
 
     def is_in_clipped(self):
         padding = 200
