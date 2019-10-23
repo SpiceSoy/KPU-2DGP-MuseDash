@@ -130,4 +130,10 @@ if __name__ == "__main__":
     debug_url = os.path.abspath(
         "../Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
     debug_result = load_map_source(debug_url)
-    print(str(debug_result))
+    note_type = []
+    for hits in debug_result.get_hit_object():
+        if not hits[4] in note_type:
+            note_type.append(hits[4])
+    for ty in note_type:
+        print(ty)
+    # print(str(debug_result))
