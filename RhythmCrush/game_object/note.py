@@ -16,8 +16,8 @@ class Note(IUpdatableObject, IDrawableObject):
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
                  speed=1, clip_x=1440, clip_y=810, line_x=100, line_y=405):
         # 여기부터
-        self.x = int(x)
-        self.y = int(y)
+        self.x = -1000
+        self.y = -1000
         self.time = int(time)
         self.note_type = int(note_type)
         self.hit_sound = int(hit_sound)
@@ -39,7 +39,7 @@ class Note(IUpdatableObject, IDrawableObject):
         self.clip_y = clip_y
         self.line_x = line_x
         self.line_y = line_y
-        self.update_start_time = 5
+        self.update_start_time = 5000
         # TODO 실제 들어오는 Type 값에 맞춰서 변경 필요
         # self.image = image_manager.load_image(note_type_dic[note_type])
         self.image = image_manager.get_image_controller(note_type_dic[self.hit_sound], randomize_note_csr[self.hit_sound], randomize_note_time[self.hit_sound])
