@@ -1,4 +1,5 @@
 from ..utill.game_timer import *
+from ..utill.input_manager import *
 from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
 
@@ -10,6 +11,7 @@ class BaseScene(IUpdatableObject, IDrawableObject):
         self.framework = framework
         self.is_active = False
         self.timer = Timer()
+        self.input_handler = InputHandlerManager(framework)
 
     def load(self):
         pass
@@ -29,6 +31,9 @@ class BaseScene(IUpdatableObject, IDrawableObject):
     def stop(self):
         self.timer.stop()
         self.is_active = False
+
+    def handle_input(self):
+        self.input_handler.handle_event()
 
     def update(self, delta_time):
         raise NotImplementedError()
