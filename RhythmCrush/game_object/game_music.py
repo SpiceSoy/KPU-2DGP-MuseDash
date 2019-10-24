@@ -36,3 +36,16 @@ class Music:
 
     def get_length_tick(self):
         pass
+
+
+class Effect:
+    def __init__(self, url=None):
+        self.wav = None
+        if url is not None:
+            self.load(url)
+
+    def load(self, url):
+        self.wav = pico2d.load_wav(url)
+
+    def play(self):
+        self.wav.play()
