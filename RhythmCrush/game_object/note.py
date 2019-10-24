@@ -42,7 +42,11 @@ class Note(IUpdatableObject, IDrawableObject):
         self.update_start_time = 5000
         # TODO 실제 들어오는 Type 값에 맞춰서 변경 필요
         # self.image = image_manager.load_image(note_type_dic[note_type])
-        self.image = image_manager.get_image_controller(note_type_dic[self.hit_sound], randomize_note_csr[self.hit_sound], randomize_note_time[self.hit_sound])
+        self.image = image_manager.get_image_controller(
+            note_type_dic[self.hit_sound],
+            randomize_note_csr[self.hit_sound],
+            randomize_note_time[self.hit_sound]
+        )
         pass
 
     def calculate_current_position(self):
