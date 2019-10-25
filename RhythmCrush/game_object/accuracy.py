@@ -11,11 +11,11 @@ class Accuracy(enum.Enum):
 
 
 class Judgement:
-    hit_range_tick = 250
+    hit_range_tick = 150
     perfect_ratio = 0.2
-    nice_ratio = 0.2
-    good_ratio = 0.2
-    bad_ratio = 0.2
+    nice_ratio = 0.3
+    good_ratio = 0.4
+    bad_ratio = 0.1
     @staticmethod
     def post_accuracy_map(hit_range_tick: int, perfect: float, nice: float, good: float, bad: float):
         Judgement.hit_range_tick = hit_range_tick
@@ -26,25 +26,30 @@ class Judgement:
         pass
 
     @staticmethod
-    def check_accuracy(music_tick, now_tick):
-        difference = music_tick - now_tick
+    def check_accuracy(map_tick, now_tick):
+        difference = map_tick - now_tick
+        # print(difference)
         if abs(difference) > Judgement.hit_range_tick:
             return Accuracy.Ignore
         else:
             ratio = abs(difference / Judgement.hit_range_tick)
-            if ratio in range(0, Judgement.perfect_ratio):
+            if 0 <= ratio < Judgement.perfect_ratio:
                 return Accuracy.Perfect
                 pass
-            elif ratio in range(Judgement.perfect_ratio, Judgement.nice_ratio):
+            elif Judgement.perfect_ratio <= ratio < Judgement.nice_ratio:
                 return Accuracy.Nice
                 pass
-            elif ratio in range(Judgement.nice_ratio, Judgement.good_ratio):
+            elif Judgement.nice_ratio <= ratio < Judgement.good_ratio:
                 return Accuracy.Good
                 pass
-            elif ratio in range(Judgement.good_ratio, Judgement.bad_ratio):
+            elif Judgement.good_ratio <= ratio < Judgement.bad_ratio:
                 return Accuracy.Bad
                 pass
-            elif ratio in range(Judgement.bad_ratio, 1):
+            elif Judgement.bad_ratio <= ratio < 1:
                 return Accuracy.Miss
                 pass
         pass
+
+    @staticmethod
+    def is_hit(accuracy: Accuracy):
+        return accuracy == Accuracy.Perfect or accuracy == Accuracy.Good or accuracy == Accuracy.Nice

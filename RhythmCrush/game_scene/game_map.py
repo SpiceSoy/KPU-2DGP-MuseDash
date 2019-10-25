@@ -4,6 +4,8 @@ from ..game_object.game_music import Music, Effect
 from ..game_object.note import Note
 from ..game_object.player_object import Player
 
+from ..game_object.accuracy import *
+
 from .. import handler_set
 from ..utill import input_manager
 
@@ -22,6 +24,7 @@ class NotePlayScene(BaseScene):
         self.effect_don_hit = Effect()
         self.effect_kat_normal = Effect()
         self.effect_kat_hit = Effect()
+        self.effect_combo_break = Effect()
         # 게임 맵
         self.map = MusicNoteMap()
         self.note_list = []
@@ -30,6 +33,8 @@ class NotePlayScene(BaseScene):
         # 최적화용 변수
         self.start_index = 0
         self.extra_update_count = 5
+        self.extra_check_count = 10
+        self.start_hit = 0
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -47,10 +52,11 @@ class NotePlayScene(BaseScene):
         # 음악 로드
         self.music.load(self.music_tag + "/../" + self.map.get_props("AudioFilename"))
         # 효과음 로드
-        self.effect_don_hit.load("C:/Users/Soy/OneDrive/1902/KPU-2DGP-RhythmCrush/RhythmCrush/Resource/Sound/don-hit.wav")
-        self.effect_don_normal.load("C:/Users/Soy/OneDrive/1902/KPU-2DGP-RhythmCrush/RhythmCrush/Resource/Sound/don-normal.wav")
-        self.effect_kat_hit.load("C:/Users/Soy/OneDrive/1902/KPU-2DGP-RhythmCrush/RhythmCrush/Resource/Sound/kat-hit.wav")
-        self.effect_kat_normal.load("C:/Users/Soy/OneDrive/1902/KPU-2DGP-RhythmCrush/RhythmCrush/Resource/Sound/kat-normal.wav")
+        self.effect_don_hit.load("Resource/Sound/don-hit.wav")
+        self.effect_don_normal.load("Resource/Sound/don-normal.wav")
+        self.effect_kat_hit.load("Resource/Sound/kat-hit.wav")
+        self.effect_kat_normal.load("Resource/Sound/kat-normal.wav")
+        self.effect_combo_break.load("Resource/Sound/combo-break.wav")
         # 플레이어 초기화
         self.player = Player()
         self.player.x = 100
@@ -104,10 +110,24 @@ class NotePlayScene(BaseScene):
 
     def post_note_handler(self):
         def touch_don():
-            self.effect_don_normal.play()
+            ac = self.check_note_accuracy()
+            print(str(ac))
+            if Judgement.is_hit(ac):
+                self.effect_don_hit.play()
+            elif ac == Accuracy.Miss:
+                self.effect_combo_break.play()
+            else:
+                self.effect_don_normal.play()
 
         def touch_kat():
-            self.effect_kat_normal.play()
+            ac = self.check_note_accuracy()
+            print(str(ac))
+            if Judgement.is_hit(ac):
+                self.effect_kat_hit.play()
+            elif ac == Accuracy.Miss:
+                self.effect_combo_break.play()
+            else:
+                self.effect_kat_normal.play()
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
@@ -118,3 +138,15 @@ class NotePlayScene(BaseScene):
             handler_set.key_input(pico2d.SDLK_DOWN, touch_don)
         )
 
+    def check_note_accuracy(self):
+        count = self.extra_check_count
+        if self.is_active:
+            for i in range(self.start_index, len(self.note_list)):
+                note = self.note_list[i]
+                judge = note.check_hit()
+                count -= 1
+                if judge != Accuracy.Ignore:
+                    return judge
+                elif count < 0:
+                    return Accuracy.Ignore
+            return Accuracy.Ignore

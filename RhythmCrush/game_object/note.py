@@ -4,6 +4,8 @@ import parse
 from ..utill import image_manager
 from ..utill import game_timer
 
+from ..game_object.accuracy import *
+
 from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
 from .. import debug
@@ -11,6 +13,7 @@ from .. import debug
 note_type_dic = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
 randomize_note_csr = {0: True, 4: False, 8: True, 12: False}
 randomize_note_time = {0: True, 4: False, 8: False, 12: False}
+
 
 class Note(IUpdatableObject, IDrawableObject):
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
@@ -21,6 +24,8 @@ class Note(IUpdatableObject, IDrawableObject):
         self.time = int(time)
         self.note_type = int(note_type)
         self.hit_sound = int(hit_sound)
+        self.is_hit = Accuracy.Ignore
+
         extra_zero = extras[0]
         if extras[0].find(',') is -1:
             self.end_time = 0
@@ -49,9 +54,12 @@ class Note(IUpdatableObject, IDrawableObject):
         )
         pass
 
-    def calculate_current_position(self):
+    def get_remain_value(self):
         current_music_tick = self.music_timer.get_time_tick()
-        remain_value = self.time - current_music_tick
+        return self.time - current_music_tick
+
+    def calculate_current_position(self):
+        remain_value = self.get_remain_value()
         debug.print_console("note-calc", f"Remain Value is {remain_value}")
         self.x = self.line_x + remain_value * self.speed
         self.y = self.line_y
@@ -78,4 +86,15 @@ class Note(IUpdatableObject, IDrawableObject):
 
     def draw(self):
         self.image.draw(self.x, self.y)
+
+    def check_note_accuracy(self):
+        return Judgement.check_accuracy(self.time, self.music_timer.get_time_tick())
+
+    def check_hit(self):
+        acc = self.check_note_accuracy()
+        if self.is_hit != Accuracy.Ignore:
+            return Accuracy.Ignore
+        elif acc != Accuracy.Ignore:
+            self.is_hit = acc
+        return self.is_hit
 
