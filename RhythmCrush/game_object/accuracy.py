@@ -1,6 +1,10 @@
 import enum
 
 
+class InputType(enum.Enum):
+    Don = 1
+    Kat = 2
+    
 class AccuracyGrade(enum.Enum):
     Perfect = 3
     Nice = 2
@@ -77,9 +81,11 @@ class Accuracy:
             self.difference = 0
             self.grade = AccuracyGrade.Ignore
 
-    def judge(self, difference):
+    def judge(self, difference, input_type: InputType, note_type: InputType):
         self.difference = difference
         self.grade = Judgement.check_accuracy(self.difference)
+        if self.is_hit() and input_type != note_type:
+            self.grade = AccuracyGrade.Miss
 
     def is_ignore(self):
         return self.grade == AccuracyGrade.Ignore

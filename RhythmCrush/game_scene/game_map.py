@@ -111,9 +111,9 @@ class NotePlayScene(BaseScene):
                         break
 
     def post_note_handler(self):
-        def touch_sound(hit, normal):
+        def touch_type(type, hit, normal):
             def touch():
-                ac = self.check_note_accuracy()
+                ac = self.check_note_accuracy(type)
                 print(f"grade : {ac.grade} / diff_time : {ac.difference}")
                 if ac.is_success():
                     hit.play()
@@ -125,20 +125,20 @@ class NotePlayScene(BaseScene):
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
-            handler_set.key_input(pico2d.SDLK_DOWN, touch_sound(self.effect_don_hit, self.effect_don_normal))
+            handler_set.key_input(pico2d.SDLK_DOWN, touch_type(InputType.Don, self.effect_don_hit, self.effect_don_normal))
         )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
-            handler_set.key_input(pico2d.SDLK_UP, touch_sound(self.effect_kat_hit, self.effect_kat_normal))
+            handler_set.key_input(pico2d.SDLK_UP, touch_type(InputType.Kat, self.effect_kat_hit, self.effect_kat_normal))
         )
 
-    def check_note_accuracy(self):
+    def check_note_accuracy(self, player_input):
         count = self.extra_check_count
         if self.is_active:
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
                 if not note.accuracy.is_gone():
-                    acc = note.check_hit()
+                    acc = note.check_hit(player_input)
                     if acc.is_hit():
                         return acc
                     else:
