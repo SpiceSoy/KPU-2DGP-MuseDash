@@ -89,9 +89,11 @@ class NotePlayScene(BaseScene):
 
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
+                if note.check_no_input():
+                    self.effect_combo_break.play()
                 if note.update(delta_time) is False:
                     count -= 1
-                if note.time - self.music.timer.get_time_tick() < 0:
+                if note.time - self.music.timer.get_time_tick() < -500:
                     self.start_index = i
                 if count < 0:
                     break;
@@ -135,10 +137,12 @@ class NotePlayScene(BaseScene):
         if self.is_active:
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
-                acc = note.check_hit()
-                count -= 1
-                if acc.is_hit():
-                    return acc
-                elif count < 0:
+                if not note.accuracy.is_gone():
+                    acc = note.check_hit()
+                    if acc.is_hit():
+                        return acc
+                    else:
+                        count -= 1
+                if count < 0:
                     return Accuracy()
             return Accuracy()

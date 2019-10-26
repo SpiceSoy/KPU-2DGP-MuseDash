@@ -77,7 +77,6 @@ class Note(IUpdatableObject, IDrawableObject):
 
     def update(self, delta_time):
         will_continue = self.calculate_current_position()
-        self.accuracy.check_no_input(self.get_remain_value())
         self.image.update(delta_time)
         return will_continue
 
@@ -97,4 +96,4 @@ class Note(IUpdatableObject, IDrawableObject):
         return self.accuracy
 
     def check_no_input(self):
-        self.accuracy.check_no_input(self.get_remain_value())
+        return self.accuracy.check_no_input(self.get_remain_value())

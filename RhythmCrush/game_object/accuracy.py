@@ -13,10 +13,10 @@ class AccuracyGrade(enum.Enum):
 
 class Judgement:
     hit_range_tick = 250
-    perfect_ratio = 0.2
-    nice_ratio = 0.3
+    perfect_ratio = 0.1
+    nice_ratio = 0.2
     good_ratio = 0.4
-    bad_ratio = 0.1
+    bad_ratio = 0.45
     hit_group = (AccuracyGrade.Perfect, AccuracyGrade.Nice, AccuracyGrade.Good, AccuracyGrade.Bad, AccuracyGrade.Miss)
     success_group = (AccuracyGrade.Perfect, AccuracyGrade.Nice, AccuracyGrade.Good)
     fail_group = (AccuracyGrade.Miss, AccuracyGrade.Bad, AccuracyGrade.NoInput)
@@ -54,7 +54,7 @@ class Judgement:
 
     @staticmethod
     def check_no_input(difference):
-        return difference < -Judgement.hit_range_tick
+        return difference / Judgement.hit_range_tick < -Judgement.bad_ratio
 
     @staticmethod
     def is_hit(accuracy: AccuracyGrade):
@@ -94,9 +94,12 @@ class Accuracy:
         return Judgement.is_fail(self.grade)
 
     def is_gone(self):
-        return self.difference < -Judgement.hit_range_tick or self.grade != Judgement.Ignore
+        return self.difference < -Judgement.hit_range_tick or self.grade != AccuracyGrade.Ignore
 
     def check_no_input(self, difference):
-        if self.grade == AccuracyGrade.Ignore and Judgement.check_no_input(difference) == AccuracyGrade.NoInput:
+        if self.grade == AccuracyGrade.Ignore and Judgement.check_no_input(difference) == True:
             self.grade = AccuracyGrade.NoInput
             self.difference = 0
+            return True
+        return False
+
