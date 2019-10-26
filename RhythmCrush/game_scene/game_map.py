@@ -109,33 +109,25 @@ class NotePlayScene(BaseScene):
                         break
 
     def post_note_handler(self):
-        def touch_don():
-            ac = self.check_note_accuracy()
-            print(str(ac))
-            if Judgement.is_hit(ac):
-                self.effect_don_hit.play()
-            elif ac == Accuracy.Miss:
-                self.effect_combo_break.play()
-            else:
-                self.effect_don_normal.play()
-
-        def touch_kat():
-            ac = self.check_note_accuracy()
-            print(str(ac))
-            if Judgement.is_hit(ac):
-                self.effect_kat_hit.play()
-            elif ac == Accuracy.Miss:
-                self.effect_combo_break.play()
-            else:
-                self.effect_kat_normal.play()
+        def touch_sound(hit, normal):
+            def touch():
+                ac = self.check_note_accuracy()
+                print(f"grade : {ac.grade} / diff_time : {ac.difference}")
+                if ac.is_success():
+                    hit.play()
+                elif ac.is_fail():
+                    self.effect_combo_break.play()
+                else:
+                    normal.play()
+            return touch
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
-            handler_set.key_input(pico2d.SDLK_UP, touch_kat)
+            handler_set.key_input(pico2d.SDLK_DOWN, touch_sound(self.effect_don_hit, self.effect_don_normal))
         )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
-            handler_set.key_input(pico2d.SDLK_DOWN, touch_don)
+            handler_set.key_input(pico2d.SDLK_UP, touch_sound(self.effect_kat_hit, self.effect_kat_normal))
         )
 
     def check_note_accuracy(self):
@@ -143,10 +135,10 @@ class NotePlayScene(BaseScene):
         if self.is_active:
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
-                judge = note.check_hit()
+                acc = note.check_hit()
                 count -= 1
-                if judge != Accuracy.Ignore:
-                    return judge
+                if acc.is_hit():
+                    return acc
                 elif count < 0:
-                    return Accuracy.Ignore
-            return Accuracy.Ignore
+                    return Accuracy()
+            return Accuracy()
