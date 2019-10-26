@@ -24,7 +24,7 @@ class Note(IUpdatableObject, IDrawableObject):
         self.time = int(time)
         self.note_type = int(note_type)
         self.hit_sound = int(hit_sound)
-        self.is_hit = Accuracy.Ignore
+        self.accuracy = Accuracy()
 
         extra_zero = extras[0]
         if extras[0].find(',') is -1:
@@ -77,6 +77,7 @@ class Note(IUpdatableObject, IDrawableObject):
 
     def update(self, delta_time):
         will_continue = self.calculate_current_position()
+        self.accuracy.check_no_input(self.get_remain_value())
         self.image.update(delta_time)
         return will_continue
 
@@ -88,13 +89,12 @@ class Note(IUpdatableObject, IDrawableObject):
         self.image.draw(self.x, self.y)
 
     def check_note_accuracy(self):
-        return Judgement.check_accuracy(self.time, self.music_timer.get_time_tick())
+        self.accuracy.judge(self.get_remain_value())
+        return self.accuracy.grade
 
     def check_hit(self):
-        acc = self.check_note_accuracy()
-        if self.is_hit != Accuracy.Ignore:
-            return Accuracy.Ignore
-        elif acc != Accuracy.Ignore:
-            self.is_hit = acc
-        return self.is_hit
+        self.accuracy.judge(self.get_remain_value())
+        return self.accuracy
 
+    def check_no_input(self):
+        self.accuracy.check_no_input(self.get_remain_value())
