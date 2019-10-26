@@ -4,7 +4,8 @@ import enum
 class InputType(enum.Enum):
     Don = 1
     Kat = 2
-    
+
+
 class AccuracyGrade(enum.Enum):
     Perfect = 3
     Nice = 2
