@@ -13,5 +13,8 @@ class Combo:
     def break_combo(self):
         self.now_combo = 0
 
+    def is_zero(self):
+        return self.now_combo == 0
+
     def __str__(self):
         return f"current_combo : {self.now_combo} / max_combo : {self.max_combo}"
