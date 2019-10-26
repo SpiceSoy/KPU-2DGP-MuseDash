@@ -11,7 +11,7 @@ class Framework:
         self.is_active = False
         self.prev_time = 0
         self.now_time = 0
-        self.game_scene = game_map.NotePlayScene(self, "Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
+        self.game_scene = game_map.NotePlayScene(self, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
 
     def start(self):
         self.is_active = True
