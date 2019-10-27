@@ -4,6 +4,7 @@ from ..game_object.game_music import Music, Effect
 from ..game_object.note import Note
 from ..game_object.player_object import Player
 from ..game_object.combo import Combo
+from ..game_object.hp import Hp
 
 from ..game_object.accuracy import *
 
@@ -38,6 +39,8 @@ class NotePlayScene(BaseScene):
         self.start_hit = 0
         # 콤보 카운터
         self.combo = Combo()
+        # HP
+        self.hp = Hp()
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -93,6 +96,7 @@ class NotePlayScene(BaseScene):
             for i in range(self.start_index, len(self.note_list)):
                 note = self.note_list[i]
                 if note.check_no_input():
+                    self.hp.check(note.accuracy.grade)
                     if not self.combo.is_zero():
                         self.effect_combo_break.play()
                     self.combo.break_combo()
@@ -119,8 +123,9 @@ class NotePlayScene(BaseScene):
         def touch_type(type, hit, normal):
             def touch():
                 ac = self.check_note_accuracy(type)
+                self.hp.check(ac.grade)
                 print(f"grade : {ac.grade} / diff_time : {ac.difference}")
-                print(str(self.combo))
+                print(f"{str(self.combo)} / current_hp : {self.hp.get_hp()}")
                 if ac.is_success():
                     hit.play()
                     self.combo.plus_combo()
