@@ -2,29 +2,27 @@ import math
 
 
 class Vec2D:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    @staticmethod
+    def scale(target):
+        return math.sqrt(Vec2D.scale_square(target))
 
-    def scale(self):
-        return math.sqrt(self.scale_sqare())
+    @staticmethod
+    def scale_square(target):
+        return target[0] * target[0] + target[1] * target[1]
 
-    def scale_square(self):
-        return self.x * self.x + self.y * self.y
+    @staticmethod
+    def add(target_a, target_b):
+        return target_a[0] + target_b[0], target_a[1] + target_b[1]
 
-    def __add__(self, other):
-        self.x += other.x
-        self.y += other.y
+    @staticmethod
+    def sub(target_a, target_b):
+        return target_a[0] - target_b[0], target_a[1] - target_b[1]
 
-    def __sub__(self, other):
-        self.x -= other.x
-        self.y -= other.y
+    @staticmethod
+    def mul(target_a, scalar):
+        return target_a[0] * scalar, target_a[1] * scalar
 
-    def __mul__(self, other):
-        self.x *= other
-        self.y *= other
-
-    def __truediv__(self, other):
-        self.x /= other
-        self.y /= other
+    @staticmethod
+    def div(target_a, scalar):
+        return target_a[0] / scalar, target_a[1] / scalar
 
