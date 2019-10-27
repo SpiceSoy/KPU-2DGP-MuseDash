@@ -8,6 +8,8 @@ from ..game_object.hp import Hp
 
 from ..game_object.accuracy import *
 
+from .. import ui
+
 from .. import handler_set
 from ..utill import input_manager
 
@@ -41,6 +43,8 @@ class NotePlayScene(BaseScene):
         self.combo = Combo()
         # HP
         self.hp = Hp()
+        # UI
+        self.ui_combo_text = ui.UIText(1000, 50, self.combo.now_combo, pt=100)
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -68,6 +72,9 @@ class NotePlayScene(BaseScene):
         self.player.x = 100
         self.player.y = 400
         self.player.post_handler(self.input_handler)
+        # 텍스트 로드
+        self.ui_combo_text.load()
+
 
         self.post_note_handler()
 
@@ -106,6 +113,8 @@ class NotePlayScene(BaseScene):
                     self.start_index = i
                 if count < 0:
                     break;
+            # UIUpdate
+            self.ui_combo_text.update_text(str(self.combo.now_combo))
 
     def draw(self):
         if self.is_active:
@@ -118,6 +127,8 @@ class NotePlayScene(BaseScene):
                 else:
                     if note.time - self.music.timer.get_time_tick() > 100:
                         break
+            # UI Draw
+            self.ui_combo_text.draw()
 
     def post_note_handler(self):
         def touch_type(type, hit, normal):
