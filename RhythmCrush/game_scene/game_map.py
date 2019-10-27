@@ -14,6 +14,7 @@ from .. import handler_set
 from ..utill import input_manager
 
 from ..utill.osu_file_format_parser import *
+from ..utill.interpolator import *
 
 
 class NotePlayScene(BaseScene):
@@ -45,6 +46,8 @@ class NotePlayScene(BaseScene):
         self.hp = Hp()
         # UI
         self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo, pt=100)
+        self.ui_hp = ui.UIProgressBar(700, 600, 'ui-hp')
+        self.hp_interpolator = FixedRatioInterpolator(self.hp.get_hp(), self.hp.get_hp(), 0.05)
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -74,7 +77,7 @@ class NotePlayScene(BaseScene):
         self.player.post_handler(self.input_handler)
         # 텍스트 로드
         self.ui_combo_text.load()
-
+        self.ui_hp.load()
 
         self.post_note_handler()
 
@@ -115,6 +118,9 @@ class NotePlayScene(BaseScene):
                     break;
             # UIUpdate
             self.ui_combo_text.update_text(f"COMBO : {self.combo.now_combo}")
+            self.hp_interpolator.dest = self.hp.get_hp()
+            self.hp_interpolator.update(delta_time)
+            self.ui_hp.update_value(self.hp_interpolator.get_current_value(), self.hp.max_hp)
 
     def draw(self):
         if self.is_active:
@@ -129,6 +135,7 @@ class NotePlayScene(BaseScene):
                         break
             # UI Draw
             self.ui_combo_text.draw()
+            self.ui_hp.draw()
 
     def post_note_handler(self):
         def touch_type(type, hit, normal):
