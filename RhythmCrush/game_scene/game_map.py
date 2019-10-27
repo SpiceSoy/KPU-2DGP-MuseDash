@@ -44,7 +44,7 @@ class NotePlayScene(BaseScene):
         # HP
         self.hp = Hp()
         # UI
-        self.ui_combo_text = ui.UIText(1000, 50, self.combo.now_combo, pt=100)
+        self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo, pt=100)
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -114,7 +114,7 @@ class NotePlayScene(BaseScene):
                 if count < 0:
                     break;
             # UIUpdate
-            self.ui_combo_text.update_text(str(self.combo.now_combo))
+            self.ui_combo_text.update_text(f"COMBO : {self.combo.now_combo}")
 
     def draw(self):
         if self.is_active:
