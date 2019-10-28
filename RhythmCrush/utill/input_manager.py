@@ -57,5 +57,7 @@ class InputHandlerManager:
         events = pico2d.get_events()
         for event in events:
             if event.type in self.call_chain_dict:
+                if event.y is not None:
+                    event.y = self.framework.h - event.y + 1
                 self.call_chain_dict[event.type].execute(event)
             self.default_event_handle(event)
