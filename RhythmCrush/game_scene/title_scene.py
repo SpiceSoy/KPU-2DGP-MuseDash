@@ -53,7 +53,7 @@ class TitleScene(BaseScene):
 
         def move_next_scene():
             self.framework.change_scene(
-                NotePlayScene(self, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
+                NotePlayScene(self.framework, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
             )
 
         def menu_func():
