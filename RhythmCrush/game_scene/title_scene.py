@@ -1,9 +1,9 @@
 from ..game_scene.base_scene import BaseScene
+from ..game_scene import game_map
 
 from .. import handler_set
 from ..ui import *
 
-from ..game_scene import *
 
 import pico2d
 
@@ -46,14 +46,14 @@ class TitleScene(BaseScene):
         def arrow_down():
             self.csr = pico2d.clamp(0, self.csr+1, 1)
 
-        def setcsr(csr):
+        def set_csr(csr):
             def ret():
                 self.csr = csr
-            return  ret
+            return ret
 
         def move_next_scene():
             self.framework.change_scene(
-                NotePlayScene(self.framework, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
+                game_map.NotePlayScene(self.framework, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
             )
 
         def menu_func():
@@ -76,11 +76,11 @@ class TitleScene(BaseScene):
         )
         self.input_handler.add_handler(
             pico2d.SDL_MOUSEMOTION,
-            handler_set.mouse_motion_input(setcsr(0), self.button[0])
+            handler_set.mouse_motion_input(set_csr(0), self.button[0])
         )
         self.input_handler.add_handler(
             pico2d.SDL_MOUSEMOTION,
-            handler_set.mouse_motion_input(setcsr(1), self.button[1])
+            handler_set.mouse_motion_input(set_csr(1), self.button[1])
         )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,

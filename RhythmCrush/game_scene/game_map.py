@@ -1,4 +1,7 @@
-from ..game_scene.base_scene import *
+import pico2d
+
+from ..game_scene.base_scene import BaseScene
+from ..game_scene import fail_scene
 
 from ..game_object.game_music import Music, Effect
 from ..game_object.note import Note
@@ -120,6 +123,8 @@ class NotePlayScene(BaseScene):
             self.hp_interpolator.dest = self.hp.get_hp()
             self.hp_interpolator.update(delta_time)
             self.ui_hp.update_value(self.hp_interpolator.get_current_value(), self.hp.max_hp)
+            if self.hp.get_hp() <= 0:
+                self.framework.change_scene(fail_scene.FailScene(self.framework))
 
     def draw(self):
         if self.is_active:
