@@ -8,6 +8,7 @@ from ..game_object.note import Note
 from ..game_object.player_object import Player
 from ..game_object.combo import Combo
 from ..game_object.hp import Hp
+from ..game_object.score import Score
 
 from ..game_object.accuracy import *
 
@@ -43,14 +44,20 @@ class NotePlayScene(BaseScene):
         self.extra_update_count = 5
         self.extra_check_count = 10
         self.start_hit = 0
-        # 콤보 카운터
+        # 콤보 HP 점수
         self.combo = Combo()
-        # HP
         self.hp = Hp()
+        self.score = Score()
+        self.hp_interpolator = FixedRatioInterpolator(self.hp.get_hp(), self.hp.get_hp(), 0.05)
+        self.score_interpolator = FixedRatioInterpolator(self.score.get_score(), self.score.get_score(), 0.05)
+        self.percent_interpolator = FixedRatioInterpolator(
+            self.score.get_accuracy_percent(), self.score.get_accuracy_percent(), 0.05
+        )
         # UI
         self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo, pt=100)
         self.ui_hp = ui.UIProgressBar(700, 600, 'ui-hp')
-        self.hp_interpolator = FixedRatioInterpolator(self.hp.get_hp(), self.hp.get_hp(), 0.05)
+        self.ui_score = ui.UIText(100, self.framework.h - 100, self.score.get_score(), pt=25)
+        self.ui_acc_percent = ui.UIText(10, 50, str(self.score.get_accuracy_percent()), pt=100)
 
     # 일단 Text URL 받게 설정
     def load(self):
@@ -82,6 +89,8 @@ class NotePlayScene(BaseScene):
         # 텍스트 로드
         self.ui_combo_text.load()
         self.ui_hp.load()
+        self.ui_score.load()
+        self.ui_acc_percent.load()
 
     def start(self):
         super().start()
@@ -109,6 +118,7 @@ class NotePlayScene(BaseScene):
                 note = self.note_list[i]
                 if note.check_no_input():
                     self.hp.check(note.accuracy.grade)
+                    self.score.add_score(note.accuracy)
                     if not self.combo.is_zero():
                         self.effect_combo_break.play()
                     self.combo.break_combo()
@@ -118,10 +128,19 @@ class NotePlayScene(BaseScene):
                     self.start_index = i
                 if count < 0:
                     break;
-            # UIUpdate
-            self.ui_combo_text.update_text(f"COMBO : {self.combo.now_combo}")
+
+            # Interpolate
             self.hp_interpolator.dest = self.hp.get_hp()
             self.hp_interpolator.update(delta_time)
+            self.score_interpolator.dest = self.score.get_score()
+            self.score_interpolator.update(delta_time)
+            self.percent_interpolator.dest = self.score.get_accuracy_percent()
+            self.percent_interpolator.update(delta_time)
+
+            # UIUpdate
+            self.ui_combo_text.update_text(f"COMBO : {self.combo.now_combo}")
+            self.ui_score.update_text(f"SCORE : {int(self.score_interpolator.get_current_value())}")
+            self.ui_acc_percent.update_text(f"{int(self.percent_interpolator.get_current_value())}%")
             self.ui_hp.update_value(self.hp_interpolator.get_current_value(), self.hp.max_hp)
             if self.hp.get_hp() <= 0:
                 self.framework.change_scene(fail_scene.FailScene(self.framework))
@@ -139,6 +158,8 @@ class NotePlayScene(BaseScene):
                         break
             # UI Draw
             self.ui_combo_text.draw()
+            self.ui_score.draw()
+            self.ui_acc_percent.draw()
             self.ui_hp.draw()
 
     def post_handler(self):
@@ -146,6 +167,7 @@ class NotePlayScene(BaseScene):
             def touch():
                 ac = self.check_note_accuracy(type)
                 self.hp.check(ac.grade)
+                self.score.add_score(ac)
                 print(f"grade : {ac.grade} / diff_time : {ac.difference}")
                 print(f"{str(self.combo)} / current_hp : {self.hp.get_hp()}")
                 if ac.is_success():
