@@ -51,6 +51,7 @@ class NotePlayScene(BaseScene):
 
     # 일단 Text URL 받게 설정
     def load(self):
+        super().load()
         # 맵 파일 로드
         self.map = load_map_source(self.music_tag)
         # 노트 로드
@@ -78,8 +79,6 @@ class NotePlayScene(BaseScene):
         # 텍스트 로드
         self.ui_combo_text.load()
         self.ui_hp.load()
-
-        self.post_note_handler()
 
     def start(self):
         super().start()
@@ -137,7 +136,7 @@ class NotePlayScene(BaseScene):
             self.ui_combo_text.draw()
             self.ui_hp.draw()
 
-    def post_note_handler(self):
+    def post_handler(self):
         def touch_type(type, hit, normal):
             def touch():
                 ac = self.check_note_accuracy(type)
