@@ -38,6 +38,9 @@ class FixedRatioInterpolator(BaseInterpolator):
 
     def update(self, delta_time):
         self.current_value = super().interpolator(self.src, self.dest, self.ratio)
+        if abs(self.current_value - self.dest) < 0.001:
+            self.current_value = self.dest
+            self.src = self.dest
         self.src = self.current_value
 
 

@@ -24,8 +24,8 @@ class Score:
 
     def __init__(self):
         self.score = 0
-        self.accuracy_percent_total = 0
-        self.accuracy_count = 0
+        self.accuracy_percent_total = 0.0
+        self.accuracy_count = 0.0
 
     def add_score(self, acc: Accuracy):
         self.score += Score.accuracy_score_ratio[acc.grade] * Score.score_max
@@ -37,6 +37,6 @@ class Score:
         return self.score
 
     def get_accuracy_percent(self):
-        if int(self.accuracy_percent_total) == 0:
-            return 0
-        return (self.accuracy_percent_total / self.accuracy_count) * 100
+        if self.accuracy_count == 0:
+            return 0.0
+        return self.accuracy_percent_total / self.accuracy_count * 100.0

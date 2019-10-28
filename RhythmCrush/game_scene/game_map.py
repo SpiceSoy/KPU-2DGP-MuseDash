@@ -49,9 +49,9 @@ class NotePlayScene(BaseScene):
         self.hp = Hp()
         self.score = Score()
         self.hp_interpolator = FixedRatioInterpolator(self.hp.get_hp(), self.hp.get_hp(), 0.05)
-        self.score_interpolator = FixedRatioInterpolator(self.score.get_score(), self.score.get_score(), 0.05)
+        self.score_interpolator = FixedRatioInterpolator(self.score.get_score(), self.score.get_score(), 0.25)
         self.percent_interpolator = FixedRatioInterpolator(
-            self.score.get_accuracy_percent(), self.score.get_accuracy_percent(), 0.05
+            self.score.get_accuracy_percent(), self.score.get_accuracy_percent(), 0.25
         )
         # UI
         self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo, pt=100)
