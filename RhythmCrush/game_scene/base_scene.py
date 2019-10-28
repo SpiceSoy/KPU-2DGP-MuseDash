@@ -12,13 +12,17 @@ class BaseScene(IUpdatableObject, IDrawableObject):
         self.is_active = False
         self.timer = Timer()
         self.input_handler = InputHandlerManager(framework)
+        self.is_loaded = False
 
     def load(self):
-        pass
+        self.is_loaded = True
+        self.post_handler()
 
     def start(self):
         self.timer.start()
         self.is_active = True
+        if not self.is_loaded:
+            self.load()
 
     def resume(self):
         self.timer.resume()
@@ -40,5 +44,8 @@ class BaseScene(IUpdatableObject, IDrawableObject):
 
     def draw(self):
         raise NotImplementedError()
+
+    def post_handler(self):
+        pass
 
 

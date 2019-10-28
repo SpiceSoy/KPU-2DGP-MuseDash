@@ -1,7 +1,7 @@
 # 메인 프레임워크
 import time
 from .utill.input_manager import *
-from RhythmCrush.game_scene import game_map
+from RhythmCrush.game_scene import *
 
 
 class Framework:
@@ -11,7 +11,9 @@ class Framework:
         self.is_active = False
         self.prev_time = 0
         self.now_time = 0
-        self.game_scene = game_map.NotePlayScene(self, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
+        self.scene_stack = []
+        # self.game_scene = game_map.NotePlayScene(self, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
+        self.scene_stack.append(TitleScene(self))
 
     def start(self):
         self.is_active = True
@@ -19,8 +21,10 @@ class Framework:
         print(self.h)
         pico2d.open_canvas(self.w, self.h)
         Framework.custom_audio_init()
-        self.game_scene.load()
-        self.game_scene.start()
+        self.scene_stack[-1].load()
+        self.scene_stack[-1].start()
+        # self.game_scene.load()
+        # self.game_scene.start()
         self.prev_time = time.time()
         self.now_time = time.time()
 
@@ -33,13 +37,39 @@ class Framework:
             self.draw()
 
     def update(self, delta_time):
-        self.game_scene.handle_input()
-        self.game_scene.update(delta_time)
+        self.scene_stack[-1].handle_input()
+        self.scene_stack[-1].update(delta_time)
+        # self.game_scene.handle_input()
+        # self.game_scene.update(delta_time)
 
     def draw(self):
         pico2d.clear_canvas()
-        self.game_scene.draw()
+        self.scene_stack[-1].draw()
+        # self.game_scene.draw()
         pico2d.update_canvas()
+
+    def exit(self):
+        self.is_active = False
+
+    def change_scene(self, scene_inst):
+        if len(self.scene_stack) > 0:
+            self.scene_stack[-1].stop()
+            self.scene_stack.pop()
+        self.scene_stack.append(scene_inst)
+        scene_inst.start()
+
+    def push_scene(self, scene_inst):
+        if len(self.scene_stack) > 0:
+            self.scene_stack[-1].pause()
+        self.scene_stack.append(scene_inst)
+        scene_inst.start()
+
+    def pop_scene(self, scene_inst):
+        if len(self.scene_stack) > 0:
+            self.scene_stack[-1].stop()
+            self.scene_stack.pop()
+        if len(self.scene_stack) > 0:
+            self.scene_stack[-1].resume()
 
     @staticmethod
     def custom_audio_init():
