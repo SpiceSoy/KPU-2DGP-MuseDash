@@ -14,6 +14,7 @@ image_url_dic = {
         'note-big-kat': "Note/taikohitcircle.png",
         'ui-hp': "UI/hp_bar.png",
         'ui-title-back': "UI/title_back.png",
+        'ui-fail-back': "UI/fail_back.png",
         'ui-csr': "UI/csr.png"
     }
 
