@@ -57,7 +57,7 @@ def load_player():
     pass
 
 
-def load_don():
+def load_kat():
     animator = Animator()
     # 기본 서있기
     # 이동하기
@@ -68,11 +68,11 @@ def load_don():
 
     animator.change_current_animation("run")
 
-    animators['note-don'] = animator
+    animators['note-kat'] = animator
     pass
 
 
-def load_kat():
+def load_don():
     animator = Animator()
     # 기본 서있기
     # 이동하기
@@ -87,7 +87,7 @@ def load_kat():
 
     animator.change_current_animation("run")
 
-    animators['note-kat'] = animator
+    animators['note-don'] = animator
     pass
 
 load_player()
