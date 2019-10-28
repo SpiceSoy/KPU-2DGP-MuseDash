@@ -12,7 +12,9 @@ image_url_dic = {
         'note-big-don': "Note/taikohitcircle.png",
         'note-kat': "Char/t_rex_sprite.png",
         'note-big-kat': "Note/taikohitcircle.png",
-        'ui-hp': "UI/hp_bar.png"
+        'ui-hp': "UI/hp_bar.png",
+        'title-background': "UI/title_back.png",
+        'ui-csr': "UI/csr.png"
     }
 
 image_cache = {}
