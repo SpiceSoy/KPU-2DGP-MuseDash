@@ -53,7 +53,7 @@ class TitleScene(BaseScene):
 
         def move_next_scene():
             self.framework.change_scene(
-                game_map.NotePlayScene(self.framework, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
+                game_map.NotePlayScene(self.framework, "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu")
             )
 
         def menu_func():

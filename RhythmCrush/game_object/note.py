@@ -11,10 +11,10 @@ from ..interface import IDrawableObject
 from .. import debug
 
 # note_img_dic = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
-note_img_dic = {0: 'note-don', 4: 'note-don', 8: 'note-kat', 12: 'note-kat'}
-note_type_dic = {0: InputType.Don, 4: InputType.Don, 8: InputType.Kat, 12: InputType.Kat}
-randomize_note_csr = {0: True, 4: False, 8: True, 12: False}
-randomize_note_time = {0: True, 4: False, 8: False, 12: False}
+note_img_dic = {0: 'note-don', 4: 'note-don', 8: 'note-kat', 12: 'note-kat', 6: 'note-kat'}
+note_type_dic = {0: InputType.Don, 4: InputType.Don, 8: InputType.Kat, 12: InputType.Kat, 6: InputType.Kat}
+randomize_note_csr = {0: True, 4: False, 8: True, 12: False, 6: False}
+randomize_note_time = {0: True, 4: False, 8: False, 12: False, 6: False}
 
 
 class Note(IUpdatableObject, IDrawableObject):

@@ -5,7 +5,7 @@ class Hp:
     def __init__(self):
         self.max_hp = 1000.0
         self.hp = self.max_hp
-        self.hp_delta = 100.0
+        self.hp_delta = 250.0
         self.grade_delta_ratio = {
             AccuracyGrade.Perfect: 0.5,
             AccuracyGrade.Nice: 0.4,
