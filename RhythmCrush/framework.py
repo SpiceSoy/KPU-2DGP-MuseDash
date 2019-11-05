@@ -64,12 +64,15 @@ class Framework:
         self.scene_stack.append(scene_inst)
         scene_inst.start()
 
-    def pop_scene(self, scene_inst):
+    def pop_scene(self):
         if len(self.scene_stack) > 0:
             self.scene_stack[-1].stop()
             self.scene_stack.pop()
         if len(self.scene_stack) > 0:
             self.scene_stack[-1].resume()
+
+    def get_index_stack(self, index):
+        return self.scene_stack[index]
 
     @staticmethod
     def custom_audio_init():
