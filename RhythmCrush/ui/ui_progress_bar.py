@@ -29,7 +29,6 @@ class UIProgressBar(BaseUIObject):
     def load(self):
         self.image_controller = image_manager.get_image_controller(self.image_tag)
 
-
     def update_value(self, value: float, value_max: float = 1.0):
         self.ratio = value / value_max
 

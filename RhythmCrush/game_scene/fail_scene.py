@@ -51,7 +51,7 @@ class FailScene(BaseScene):
                 self.csr = csr
             return ret
 
-        def move_mune():
+        def move_menu():
             self.framework.change_scene(
                 title_scene.TitleScene(self.framework)
             )
@@ -60,7 +60,7 @@ class FailScene(BaseScene):
             if self.csr == 1:
                 self.framework.exit()
             elif self.csr == 0:
-                move_mune()
+                move_menu()
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
@@ -92,6 +92,6 @@ class FailScene(BaseScene):
         )
         self.input_handler.add_handler(
             pico2d.SDL_MOUSEBUTTONDOWN,
-            handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, move_mune, self.button[0])
+            handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, move_menu, self.button[0])
         )
         pass

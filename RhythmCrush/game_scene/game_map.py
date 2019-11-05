@@ -147,6 +147,7 @@ class NotePlayScene(BaseScene):
 
     def draw(self):
         if self.is_active:
+            
             self.player.draw()
 
             for i in range(self.start_index, len(self.note_list)):

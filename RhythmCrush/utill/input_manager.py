@@ -2,6 +2,7 @@ import enum
 import pico2d
 from functools import partial
 
+
 class CallChain:
     def __init__(self):
         self.chain = {}
