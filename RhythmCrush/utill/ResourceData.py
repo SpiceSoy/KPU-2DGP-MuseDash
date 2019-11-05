@@ -15,8 +15,10 @@ image_url_dic = {
         'ui-hp': "UI/hp_bar.png",
         'ui-title-back': "UI/title_back.png",
         'ui-fail-back': "UI/fail_back.png",
-        'ui-csr': "UI/csr.png"
-    }
+        'ui-pause-back': "UI/pause_back.png",
+        'ui-csr': "UI/csr.png",
+        'ui-csr-small': "UI/csr-small.png",
+}
 
 image_cache = {}
 
@@ -89,6 +91,7 @@ def load_don():
 
     animators['note-don'] = animator
     pass
+
 
 load_player()
 load_don()
