@@ -25,6 +25,7 @@ class Timer:
 
     def start(self):
         self.start_time = time.time()
+        self.is_active = True
 
     def stop(self):
         self.start_time = 0
@@ -36,9 +37,11 @@ class Timer:
     def pause(self):
         if self.is_active is True and self.is_pause is False:
             self.pause_time = time.time()
+            print(f"pause_time is {self.pause_time}")
             self.is_pause = True
 
     def resume(self):
         if self.is_active is True and self.is_pause is True:
             self.pause_duration = self.pause_duration + (time.time() - self.pause_time)
+            print(f"pause_duration is {self.pause_duration}")
             self.is_pause = False

@@ -105,10 +105,12 @@ class NotePlayScene(BaseScene):
     def pause(self):
         super().start()
         self.music.pause()
+        self.timer.pause()
 
     def stop(self):
         super().stop()
         self.music.stop()
+        self.timer.pause()
 
     def update(self, delta_time):
         count = self.extra_update_count
