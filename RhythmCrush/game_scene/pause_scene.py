@@ -17,14 +17,16 @@ class PauseScene(BaseScene):
             594
         ]
         self.csr_y = [
-            framework.h - 561,
-            framework.h - 690
+            framework.h - 390,
+            framework.h - 497,
+            framework.h - 604,
         ]
         self.button = [
             ClickableRect(720, framework.h - 390, 325, 102),
             ClickableRect(720, framework.h - 497, 325, 102),
             ClickableRect(720, framework.h - 604, 325, 102)
         ]
+        self.csr = 0
         self.failed_image = UIStaticImage(self.framework.w/2, self.framework.h/2, 'ui-pause-back')
         self.csr_image = UIStaticImage(560, self.csr_y[self.csr], 'ui-csr-small')
 
@@ -39,6 +41,7 @@ class PauseScene(BaseScene):
         pass
 
     def draw(self):
+        self.framework.get_index_stack(-2).draw()
         self.failed_image.draw()
         self.csr_image.draw()
 
@@ -47,10 +50,10 @@ class PauseScene(BaseScene):
             self.framework.exit()
 
         def arrow_up():
-            self.csr = pico2d.clamp(0, self.csr-1, 1)
+            self.csr = pico2d.clamp(0, self.csr-1, 2)
 
         def arrow_down():
-            self.csr = pico2d.clamp(0, self.csr+1, 1)
+            self.csr = pico2d.clamp(0, self.csr+1, 2)
 
         def set_csr(csr):
             def ret():
@@ -63,7 +66,8 @@ class PauseScene(BaseScene):
             )
 
         def menu_func():
-            if self.csr ==2:
+            print(self.csr)
+            if self.csr == 2:
                 self.framework.exit()
             elif self.csr == 1:
                 move_menu()
@@ -90,6 +94,10 @@ class PauseScene(BaseScene):
         self.input_handler.add_handler(
             pico2d.SDL_MOUSEMOTION,
             handler_set.mouse_motion_input(set_csr(1), self.button[1])
+        )
+        self.input_handler.add_handler(
+            pico2d.SDL_MOUSEMOTION,
+            handler_set.mouse_motion_input(set_csr(2), self.button[2])
         )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
