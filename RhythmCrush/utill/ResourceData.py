@@ -18,6 +18,9 @@ image_url_dic = {
         'ui-pause-back': "UI/pause_back.png",
         'ui-csr': "UI/csr.png",
         'ui-csr-small': "UI/csr-small.png",
+        'ui-csr-48': "UI/csr-48.png",
+        'ui-csr-72': "UI/csr-72.png",
+        'ui-select-back': "UI/select-menu.png"
 }
 
 image_cache = {}

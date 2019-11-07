@@ -7,6 +7,7 @@ class FontType(enum.Enum):
     NexonLv1 = 1
     NexonLv2 = 2
     NexonFootball = 3
+    Fixedsys = 4
 
 
 class FontStyle(enum.Enum):
@@ -24,6 +25,8 @@ class FontManager:
         (FontType.NexonLv2, FontStyle.Bold): "Resource/Font/NEXON Lv2 Gothic Bold.ttf",
         (FontType.NexonFootball, FontStyle.Regular): "Resource/Font/NEXONFootballGothicL.ttf",
         (FontType.NexonFootball, FontStyle.Bold): "Resource/Font/NEXONFootballGothicL.ttf",
+        (FontType.Fixedsys, FontStyle.Regular): "Resource/Font/fixedsys.ttf",
+        (FontType.Fixedsys, FontStyle.Bold): "Resource/Font/fixedsys.ttf",
     }
     loaded_font = {}
 
