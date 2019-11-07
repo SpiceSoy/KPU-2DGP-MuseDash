@@ -1,5 +1,5 @@
 from ..game_scene.base_scene import BaseScene
-from ..game_scene import game_map
+from ..game_scene import select_scene
 
 from .. import handler_set
 from ..ui import *
@@ -52,8 +52,11 @@ class TitleScene(BaseScene):
             return ret
 
         def move_next_scene():
+            # self.framework.change_scene(
+            #     game_map.NotePlayScene(self.framework, "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu")
+            # )
             self.framework.change_scene(
-                game_map.NotePlayScene(self.framework, "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu")
+                select_scene.SelectScene(self.framework)
             )
 
         def menu_func():
