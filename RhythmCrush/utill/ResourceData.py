@@ -1,5 +1,7 @@
 from ..component.animation import *
 
+music_metadata_url = "Resource/Map/music_meta.json"
+
 image_base_dir_url = "Resource/Image/"
 
 image_url_dic = {
@@ -20,7 +22,7 @@ image_url_dic = {
         'ui-csr-small': "UI/csr-small.png",
         'ui-csr-48': "UI/csr-48.png",
         'ui-csr-72': "UI/csr-72.png",
-        'ui-select-back': "UI/select-menu.png"
+        'ui-select-back': "UI/select-menu-back.png"
 }
 
 image_cache = {}
