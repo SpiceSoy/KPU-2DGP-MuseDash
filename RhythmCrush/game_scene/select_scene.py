@@ -1,5 +1,6 @@
 from ..game_scene.base_scene import BaseScene
 from ..game_scene import title_scene
+from ..game_scene import game_map
 
 from ..utill import music_meta_data
 from ..utill import ResourceData
@@ -16,36 +17,25 @@ class SelectScene(BaseScene):
 
     def __init__(self, framework):
         super().__init__(framework)
-        # self.csr_x = [
-        #     544,
-        #     594,
-        #     594
-        # ]
-        # self.csr_y = [
-        #     framework.h - 390,
-        #     framework.h - 497,
-        #     framework.h - 604,
-        # ]
-        # self.button = [
-        #     ClickableRect(720, framework.h - 390, 325, 102),
-        #     ClickableRect(720, framework.h - 497, 325, 102),
-        #     ClickableRect(720, framework.h - 604, 325, 102)
-        # ]
         self.csr_music = 0
-        # self.csr_difficult = 0
         self.failed_image = UIStaticImage(self.framework.w / 2, self.framework.h / 2, 'ui-select-back')
         # self.csr_image = UIStaticImage(560, self.csr_y[self.csr], 'ui-csr-48')
-        # self.csr_image = UIStaticImage(560, self.csr_y[self.csr], 'ui-csr-72')
+        self.csr_y = [self.framework.h - 412, self.framework.h - 502, self.framework.h - 592]
+        self.csr_image = UIStaticImage(1010, self.csr_y[0], 'ui-csr-72')
+        self.csr_difficult = -1
         self.music_list = []
 
     def load(self):
-        super().load()
         self.failed_image.load()
+        self.csr_image.load()
         self.music_list = music_meta_data.load_music_metadata_list(ResourceData.music_metadata_url)
         self.ui_music_list = [
             UIText(30, self.framework.h - 249 - 48 * i, f"{i}. {self.music_list[i].title}", FontType.Fixedsys, pt=48,
                    color=(83, 83, 83))
             for i in range(len(self.music_list))
+        ]
+        self.select_button = [
+            ClickableRect(30, self.framework.h - 249 - 48 * i, 900, 72 + 4) for i in range(len(self.music_list))
         ]
         self.ui_title_text = UIText(608, self.framework.h - 260, self.music_list[0].title, FontType.Fixedsys, pt=72,
                                     color=(83, 83, 83))
@@ -61,9 +51,15 @@ class SelectScene(BaseScene):
                                              color=(83, 83, 83))
         self.ui_difficult_extreme_text = UIText(1028, self.framework.h - 592, "EXTREME", FontType.Fixedsys, pt=72,
                                                 color=(83, 83, 83))
+        self.difficult_button = [
+            ClickableRect(1028, self.framework.h - 412, 500, 72 + 4),
+            ClickableRect(1028, self.framework.h - 502, 500, 72 + 4),
+            ClickableRect(1028, self.framework.h - 592, 500, 72 + 4),
+        ]
         self.ui_difficult_normal_text.load()
         self.ui_difficult_hard_text.load()
         self.ui_difficult_extreme_text.load()
+        super().load()
 
     def update(self, delta_time):
         for i in range(len(self.ui_music_list)):
@@ -90,8 +86,8 @@ class SelectScene(BaseScene):
             self.text_normal_color if self.music_list[self.csr_music].has_hard() else self.text_unvisible_color)
         self.ui_difficult_extreme_text.change_color(
             self.text_normal_color if self.music_list[self.csr_music].has_extreme() else self.text_unvisible_color)
-        # self.csr_image.position[0] = self.csr_x[self.csr]
-        # self.csr_image.position[1] = self.csr_y[self.csr]
+        if self.csr_difficult != -1:
+            self.csr_image.position[1] = self.csr_y[self.csr_difficult]
         pass
 
     def draw(self):
@@ -104,21 +100,52 @@ class SelectScene(BaseScene):
         self.ui_difficult_normal_text.draw()
         self.ui_difficult_hard_text.draw()
         self.ui_difficult_extreme_text.draw()
+        if self.csr_difficult != -1:
+            self.csr_image.draw()
 
     def post_handler(self):
         def game_end():
             self.framework.exit()
 
         def arrow_up():
-            self.csr_music = pico2d.clamp(0, self.csr_music - 1, 2)
+            if self.csr_difficult == -1:
+                self.csr_music = pico2d.clamp(0, self.csr_music - 1, len(self.music_list)-1)
+            else:
+                difficult_list = self.music_list[self.csr_music].get_difficult_csr_list()
+                self.csr_difficult = difficult_list[difficult_list.index(self.csr_difficult) - 1]
 
         def arrow_down():
-            self.csr_music = pico2d.clamp(0, self.csr_music + 1, 2)
+            if self.csr_difficult == -1:
+                self.csr_music = pico2d.clamp(0, self.csr_music + 1, len(self.music_list)-1)
+            else:
+                difficult_list = self.music_list[self.csr_music].get_difficult_csr_list()
+                self.csr_difficult = difficult_list[(difficult_list.index(self.csr_difficult) + 1) % len(difficult_list)]
 
-        def set_csr(csr):
+        def escape():
+            if self.csr_difficult == -1:
+                self.framework.change_scene(title_scene.TitleScene(self.framework))
+            else:
+                self.csr_difficult = -1
+
+        def enter():
+            if self.csr_difficult == -1:
+                self.csr_difficult = difficult_list = self.music_list[self.csr_music].get_difficult_csr_list()[0]
+            else:
+                self.framework.change_scene(
+                    game_map.NotePlayScene(self.framework, self.music_list[self.csr_music].get_difficult_url(self.csr_difficult))
+                )
+                pass
+
+        def set_music_csr(csr):
             def ret():
-                self.csr = csr
+                self.csr_music = csr
+                self.csr_difficult = -1
+            return ret
 
+        def set_difficult_csr(csr):
+            def ret():
+                if self.music_list[self.csr_music].has_difficult(csr):
+                    self.csr_difficult = csr
             return ret
 
         def move_menu():
@@ -126,19 +153,13 @@ class SelectScene(BaseScene):
                 title_scene.TitleScene(self.framework)
             )
 
-        def menu_func():
-            print(self.csr)
-            if self.csr == 2:
-                self.framework.exit()
-            elif self.csr == 1:
-                move_menu()
-            elif self.csr == 0:
-                self.framework.pop_scene()
-                pass
-
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
-            handler_set.key_input(pico2d.SDLK_ESCAPE, move_menu)
+            handler_set.key_input(pico2d.SDLK_ESCAPE, escape)
+        )
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_RETURN, enter)
         )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
@@ -148,10 +169,22 @@ class SelectScene(BaseScene):
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_DOWN, arrow_down)
         )
-        # self.input_handler.add_handler(
-        #     pico2d.SDL_MOUSEMOTION,
-        #     handler_set.mouse_motion_input(set_csr(0), self.button[0])
-        # )
+        for i in range(len(self.select_button)):
+            self.input_handler.add_handler(
+                pico2d.SDL_MOUSEMOTION,
+                handler_set.mouse_motion_input(set_music_csr(i), self.select_button[i])
+            )
+
+        for i in range(len(self.difficult_button)):
+            self.input_handler.add_handler(
+                pico2d.SDL_MOUSEMOTION,
+                handler_set.mouse_motion_input(set_difficult_csr(i), self.difficult_button[i])
+            )
+        for i in range(len(self.difficult_button)):
+            self.input_handler.add_handler(
+                pico2d.SDL_MOUSEBUTTONDOWN,
+                handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, enter, self.difficult_button[i])
+            )
         # self.input_handler.add_handler(
         #     pico2d.SDL_MOUSEMOTION,
         #     handler_set.mouse_motion_input(set_csr(1), self.button[1])
