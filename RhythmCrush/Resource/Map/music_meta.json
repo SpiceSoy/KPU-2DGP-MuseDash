@@ -19,5 +19,19 @@
       "normal_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu",
       "hard_url" : "",
       "extreme_url" : ""
+    },
+    {
+      "title" : "Test My TESS",
+      "artist": "KIMKIMKIM",
+      "normal_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu",
+      "hard_url" : "",
+      "extreme_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu"
+    },
+  {
+      "title" : "Test My TESS",
+      "artist": "KIMKIMKIM",
+      "normal_url" : "",
+      "hard_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu",
+      "extreme_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu"
     }
 ]
