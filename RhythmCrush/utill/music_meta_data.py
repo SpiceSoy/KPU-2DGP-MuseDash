@@ -28,6 +28,9 @@ class MusicMetaData:
     def has_difficult(self, difficult_csr: int):
         return [self.has_normal(), self.has_hard(), self.has_extreme()][difficult_csr]
 
+    def get_difficult_url(self,difficult_csr: int):
+        return [self.url_difficult_normal, self.url_difficult_hard, self.url_difficult_extreme][difficult_csr]
+
     def __str__(self):
         return f"{self.title} " + f"{self.artist}"+ f"\n{self.url_difficult_normal}"+ \
         f"\n{self.url_difficult_hard}"+ f"\n{self.url_difficult_extreme}\n"
