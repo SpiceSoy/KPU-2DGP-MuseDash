@@ -1,5 +1,4 @@
 from ..game_scene.base_scene import BaseScene
-from ..game_scene import title_scene
 
 from .. import handler_set
 from ..ui import *
@@ -27,25 +26,24 @@ class PauseScene(BaseScene):
             ClickableRect(720, framework.h - 604, 325, 102)
         ]
         self.csr = 0
-        self.failed_image = UIStaticImage(self.framework.w/2, self.framework.h/2, 'ui-pause-back')
+        self.background_image = UIStaticImage(self.framework.w / 2, self.framework.h / 2, 'ui-pause-back')
         self.csr_image = UIStaticImage(560, self.csr_y[self.csr], 'ui-csr-small')
+        self.game_world.add_object(self.background_image, 0)
+        self.game_world.add_object(self.csr_image, 1)
 
     def load(self):
         super().load()
-        self.failed_image.load()
-        self.csr_image.load()
 
     def update(self, delta_time):
         self.csr_image.position[0] = self.csr_x[self.csr]
         self.csr_image.position[1] = self.csr_y[self.csr]
-        pass
 
     def draw(self):
         self.framework.get_index_stack(-2).draw()
-        self.failed_image.draw()
-        self.csr_image.draw()
+        super().draw()
 
     def post_handler(self):
+        # 콜백 함수 시작
         def game_end():
             self.framework.exit()
 
@@ -61,9 +59,8 @@ class PauseScene(BaseScene):
             return ret
 
         def move_menu():
-            self.framework.change_scene(
-                title_scene.TitleScene(self.framework)
-            )
+            from ..game_scene.title_scene import TitleScene
+            self.framework.change_scene(TitleScene(self.framework))
 
         def menu_func():
             print(self.csr)
@@ -74,6 +71,7 @@ class PauseScene(BaseScene):
             elif self.csr == 0:
                 self.framework.pop_scene()
                 pass
+        # 콜백 함수 종료
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
@@ -111,4 +109,3 @@ class PauseScene(BaseScene):
             pico2d.SDL_MOUSEBUTTONDOWN,
             handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, move_menu, self.button[0])
         )
-        pass
