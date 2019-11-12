@@ -25,5 +25,5 @@ class UIText(BaseUIObject):
         self.color = color
 
     def draw(self):
-        if self.visible:
+        if self.is_visible:
             self.font.draw(self.position[0], self.position[1], self.text, self.color)

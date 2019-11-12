@@ -17,7 +17,7 @@ class UIStaticImage(BaseUIObject):
         self.image_controller = image_manager.get_image_controller(self.image_tag)
 
     def draw(self):
-        if self.visible:
+        if self.is_visible:
             self.image_controller.draw(self.position[0], self.position[1], self.w, self.h)
 
 

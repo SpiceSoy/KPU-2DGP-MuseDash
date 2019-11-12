@@ -33,7 +33,7 @@ class UIProgressBar(BaseUIObject):
         self.ratio = value / value_max
 
     def draw(self):
-        if self.visible:
+        if self.is_visible:
             src_w = self.image_controller.image.w
             src_h = self.image_controller.image.h
             center_calibration_direction = UIProgressBar.direction_dic[self.direction]
