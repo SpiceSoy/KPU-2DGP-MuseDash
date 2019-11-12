@@ -1,7 +1,6 @@
 import pico2d
 
-from ..ui.position import *
-from ..ui.ui_base import *
+from ..ui.ui_base import BaseUIObject
 from ..utill.font_manager import *
 
 
@@ -26,4 +25,5 @@ class UIText(BaseUIObject):
         self.color = color
 
     def draw(self):
-        self.font.draw(self.position[0], self.position[1], self.text, self.color)
+        if self.visible:
+            self.font.draw(self.position[0], self.position[1], self.text, self.color)

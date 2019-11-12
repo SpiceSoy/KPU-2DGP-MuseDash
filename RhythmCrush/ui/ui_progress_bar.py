@@ -33,20 +33,21 @@ class UIProgressBar(BaseUIObject):
         self.ratio = value / value_max
 
     def draw(self):
-        src_w = self.image_controller.image.w
-        src_h = self.image_controller.image.h
-        plus = UIProgressBar.direction_dic[self.direction]
-        if self.direction in (ProgressbarDirection.LeftToRight, ProgressbarDirection.RightToLeft):
-            cal_w = self.image_controller.image.w * self.ratio
-            cal_h = self.image_controller.image.h
-            x = self.position[0] + plus * ((1 - self.ratio) * self.image_controller.image.w / 2)
-            y = self.position[1]
-        else:
-            cal_w = self.image_controller.image.w
-            cal_h = self.image_controller.image.h * self.ratio
-            x = self.position[0]
-            y = self.position[1] + plus * ((1 - self.ratio) * self.image_controller.image.h / 2)
-        self.image_controller.clip_draw_no_animation(0, 0, int(cal_w), int(cal_h), int(x), int(y))
+        if self.visible:
+            src_w = self.image_controller.image.w
+            src_h = self.image_controller.image.h
+            center_calibration_direction = UIProgressBar.direction_dic[self.direction]
+            if self.direction in (ProgressbarDirection.LeftToRight, ProgressbarDirection.RightToLeft):
+                cal_w = src_w * self.ratio
+                cal_h = src_h
+                x = self.position[0] + center_calibration_direction * ((1 - self.ratio) * src_w / 2)
+                y = self.position[1]
+            else:
+                cal_w = src_w
+                cal_h = src_h * self.ratio
+                x = self.position[0]
+                y = self.position[1] + center_calibration_direction * ((1 - self.ratio) * src_h / 2)
+            self.image_controller.clip_draw_no_animation(0, 0, int(cal_w), int(cal_h), int(x), int(y))
 
 
 
