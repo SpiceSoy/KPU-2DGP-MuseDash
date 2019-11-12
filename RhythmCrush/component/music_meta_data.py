@@ -56,8 +56,3 @@ def load_music_metadata_list(url):
         for ds in data_list:
             return_list.append(load_music_metadata(ds))
     return return_list
-
-
-if __name__ == "__main__":
-    for i in load_music_metadata_list("../Resource/Map/music_meta.json"):
-        print(str(i))

@@ -1,14 +1,11 @@
-import pico2d
 import parse
 
-from ..utill import image_manager
-from ..utill import game_timer
+from RhythmCrush.utill import image_manager
 
-from ..game_object.accuracy import *
+from RhythmCrush.component.accuracy import *
 
-from ..interface import IUpdatableObject
-from ..interface import IDrawableObject
-from .. import debug
+from RhythmCrush.interface import IUpdatableObject
+from RhythmCrush.interface import IDrawableObject
 
 # note_img_dic = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
 note_img_dic = {0: 'note-don', 4: 'note-don', 8: 'note-kat', 12: 'note-kat', 6: 'note-kat'}
@@ -62,7 +59,6 @@ class Note(IUpdatableObject, IDrawableObject):
 
     def calculate_current_position(self):
         remain_value = self.get_remain_value()
-        debug.print_console("note-calc", f"Remain Value is {remain_value}")
         self.x = self.line_x + remain_value * self.speed
         self.y = self.line_y
         return self.update_start_time > remain_value

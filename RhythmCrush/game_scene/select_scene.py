@@ -1,6 +1,6 @@
 from ..game_scene.base_scene import BaseScene
 
-from ..utill import music_meta_data
+from RhythmCrush.component import music_meta_data
 from ..utill import ResourceData
 
 from .. import handler_set

@@ -1,6 +1,4 @@
-import enum
 import pico2d
-from functools import partial
 
 
 class CallChain:

@@ -2,7 +2,7 @@
 # 리듬게임용 음악 모듈 - pico2d Music 클래스 래핑
 
 import pico2d
-from ..utill.game_timer import *
+from RhythmCrush.utill.game_timer import *
 import time
 
 

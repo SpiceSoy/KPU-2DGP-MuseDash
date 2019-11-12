@@ -1,4 +1,4 @@
-from ..interface import IUpdatableObject
+from RhythmCrush.interface import IUpdatableObject
 
 
 class BaseInterpolator(IUpdatableObject):

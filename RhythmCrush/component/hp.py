@@ -1,4 +1,4 @@
-from ..game_object.accuracy import *
+from RhythmCrush.component.accuracy import *
 
 
 class Hp:

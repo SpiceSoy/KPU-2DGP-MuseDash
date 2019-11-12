@@ -1,6 +1,3 @@
-from ..game_object.accuracy import *
-
-
 class Combo:
     def __init__(self):
         self.now_combo = 0

@@ -5,22 +5,21 @@ from ..game_scene import fail_scene
 from ..game_scene import pause_scene
 from ..game_scene import clear_scene
 
-from ..game_object.game_music import Music, Effect
-from ..game_object.note import Note
+from RhythmCrush.component.game_music import Music, Effect
+from RhythmCrush.game_object.note import Note
 from ..game_object.player_object import Player
-from ..game_object.combo import Combo
-from ..game_object.hp import Hp
-from ..game_object.score import Score
+from RhythmCrush.component.combo import Combo
+from RhythmCrush.component.hp import Hp
+from RhythmCrush.component.score import Score
 
-from ..game_object.accuracy import *
+from RhythmCrush.component.accuracy import *
 
 from .. import ui
 
 from .. import handler_set
-from ..utill import input_manager
 
 from ..utill.osu_file_format_parser import *
-from ..utill.interpolator import *
+from RhythmCrush.component.interpolator import *
 
 
 class NotePlayScene(BaseScene):

@@ -4,8 +4,6 @@
 import os
 import parse
 
-from RhythmCrush import debug
-
 
 class FileNotFound(Exception):
     pass
@@ -108,32 +106,15 @@ def parse_map_text(text_data):
         if context_parse_result is not None:
             # 문단 파악
             line_context = context_parse_result[0]
-            debug.print_console("parse_file", f"Read Line Context { line_context }")
         else:
             if line_context is not None:
                 line_parse_result = line_parse_func[line_context](line)
                 if line_parse_result is not None:
-                    debug.print_console("parse_file", "Read Line And Add Values")
                     result.add_value(line_context, line_parse_result)
             # 라인 읽기
             pass
-    debug.print_console("parse_file", "Parse End")
     return result
 
 
 def load_map_source(url):
     return parse_map_text(open(url, 'r', encoding='UTF8'))
-
-
-# 단위 테스트 코드
-if __name__ == "__main__":
-    debug_url = os.path.abspath(
-        "../Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu")
-    debug_result = load_map_source(debug_url)
-    note_type = []
-    for hits in debug_result.get_hit_object():
-        if not hits[4] in note_type:
-            note_type.append(hits[4])
-    for ty in note_type:
-        print(ty)
-    # print(str(debug_result))

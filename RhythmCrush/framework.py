@@ -12,7 +12,6 @@ class Framework:
         self.prev_time = 0
         self.now_time = 0
         self.scene_stack = []
-        # self.game_scene = game_map.NotePlayScene(self, "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Muzukashii].osu")
         self.scene_stack.append(TitleScene(self))
 
     def start(self):
@@ -23,8 +22,6 @@ class Framework:
         Framework.custom_audio_init()
         self.scene_stack[-1].load()
         self.scene_stack[-1].start()
-        # self.game_scene.load()
-        # self.game_scene.start()
         self.prev_time = time.time()
         self.now_time = time.time()
 
@@ -39,13 +36,10 @@ class Framework:
     def update(self, delta_time):
         self.scene_stack[-1].handle_input()
         self.scene_stack[-1].update(delta_time)
-        # self.game_scene.handle_input()
-        # self.game_scene.update(delta_time)
 
     def draw(self):
         pico2d.clear_canvas()
         self.scene_stack[-1].draw()
-        # self.game_scene.draw()
         pico2d.update_canvas()
 
     def exit(self):

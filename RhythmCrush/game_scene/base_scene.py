@@ -4,8 +4,6 @@ from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
 from ..game_object.game_world import GameWorld
 
-from .. import debug
-
 
 class BaseScene(IUpdatableObject, IDrawableObject):
     def __init__(self, framework):
@@ -50,4 +48,3 @@ class BaseScene(IUpdatableObject, IDrawableObject):
 
     def post_handler(self):
         pass
-    
