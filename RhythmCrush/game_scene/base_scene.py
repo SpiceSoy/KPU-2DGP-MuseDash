@@ -2,6 +2,7 @@ from ..utill.game_timer import *
 from ..utill.input_manager import *
 from ..interface import IUpdatableObject
 from ..interface import IDrawableObject
+from ..game_object.game_world import GameWorld
 
 from .. import debug
 
@@ -13,10 +14,12 @@ class BaseScene(IUpdatableObject, IDrawableObject):
         self.timer = Timer()
         self.input_handler = InputHandlerManager(framework)
         self.is_loaded = False
+        self.game_world = GameWorld()
 
     def load(self):
         self.is_loaded = True
         self.post_handler()
+        self.game_world.load()
 
     def start(self):
         self.timer.start()
@@ -40,10 +43,10 @@ class BaseScene(IUpdatableObject, IDrawableObject):
         self.input_handler.handle_event()
 
     def update(self, delta_time):
-        raise NotImplementedError()
+        self.game_world.update(delta_time)
 
     def draw(self):
-        raise NotImplementedError()
+        self.game_world.draw()
 
     def post_handler(self):
         pass
