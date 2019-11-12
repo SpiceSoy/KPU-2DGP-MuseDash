@@ -1,5 +1,4 @@
 from ..game_scene.base_scene import BaseScene
-from ..game_scene.select_scene import SelectScene
 
 from .. import handler_set
 from ..ui import *
@@ -47,6 +46,7 @@ class TitleScene(BaseScene):
             return ret
 
         def move_next_scene():
+            from ..game_scene.select_scene import SelectScene
             self.framework.change_scene(SelectScene(self.framework))
 
         def menu_enter_func():
