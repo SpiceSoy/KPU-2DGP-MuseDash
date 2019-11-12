@@ -37,7 +37,7 @@ class SelectScene(BaseScene):
             ClickableRect(1028, self.framework.h - 592, 500, 72 + 4),
         ]
 
-        self.failed_background_image = UIStaticImage(self.framework.w / 2, self.framework.h / 2, 'ui-select-back')
+        self.background_image = UIStaticImage(self.framework.w / 2, self.framework.h / 2, 'ui-select-back')
         self.csr_image = UIStaticImage(1010, self.csr_y[0], 'ui-csr-72')
         self.ui_music_list = [
             UIText(30, self.framework.h - 249 - 48 * i, f"{i}. {self.music_list[i].title}", FontType.Fixedsys, pt=48,
@@ -55,7 +55,7 @@ class SelectScene(BaseScene):
         self.ui_difficult_extreme_text = UIText(1028, self.framework.h - 592, "EXTREME", FontType.Fixedsys,
                                                 pt=72, color=SelectScene.normal_text_color)
 
-        self.game_world.add_object(self.failed_background_image, 0)
+        self.game_world.add_object(self.background_image, 0)
         self.game_world.add_object(self.csr_image, 2)
         self.game_world.add_object(self.ui_title_text, 1)
         self.game_world.add_object(self.ui_artist_text, 1)

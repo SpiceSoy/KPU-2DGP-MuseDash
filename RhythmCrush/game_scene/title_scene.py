@@ -18,10 +18,10 @@ class TitleScene(BaseScene):
             ClickableRect(1162, framework.h - 561, 350, 120),
             ClickableRect(1162, framework.h - 690, 350, 120)
         ]
-        self.title_image = UIStaticImage(self.framework.w/2, self.framework.h/2, 'ui-title-back')
+        self.background_image = UIStaticImage(self.framework.w / 2, self.framework.h / 2, 'ui-title-back')
         self.csr_image = UIStaticImage(980, self.csr_y[self.csr], 'ui-csr')
 
-        self.game_world.add_object(self.title_image, 0)
+        self.game_world.add_object(self.background_image, 0)
         self.game_world.add_object(self.csr_image, 1)
 
     def update(self, delta_time):
