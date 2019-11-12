@@ -50,5 +50,4 @@ class BaseScene(IUpdatableObject, IDrawableObject):
 
     def post_handler(self):
         pass
-
-
+    
