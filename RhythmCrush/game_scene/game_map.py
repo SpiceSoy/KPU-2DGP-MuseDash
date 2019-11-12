@@ -3,6 +3,7 @@ import pico2d
 from ..game_scene.base_scene import BaseScene
 from ..game_scene import fail_scene
 from ..game_scene import pause_scene
+from ..game_scene import clear_scene
 
 from ..game_object.game_music import Music, Effect
 from ..game_object.note import Note
@@ -147,6 +148,7 @@ class NotePlayScene(BaseScene):
             self.ui_hp.update_value(self.hp_interpolator.get_current_value(), self.hp.max_hp)
             if self.hp.get_hp() <= 0:
                 self.framework.change_scene(fail_scene.FailScene(self.framework))
+            self.check_map_is_end()
 
     def draw(self):
         if self.is_active:
@@ -188,6 +190,15 @@ class NotePlayScene(BaseScene):
         def enter_pause_scene():
             self.framework.push_scene(pause_scene.PauseScene(self.framework))
 
+        def enter_clear_scene():
+            self.framework.push_scene(
+                clear_scene.ClearScene(
+                    self.framework,
+                    int(self.score.get_score()),
+                    int(self.score.get_accuracy_percent())
+                )
+            )
+
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_DOWN, touch_type(InputType.Don, self.effect_don_hit, self.effect_don_normal))
@@ -200,6 +211,20 @@ class NotePlayScene(BaseScene):
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_p, enter_pause_scene)
         )
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_ESCAPE, enter_pause_scene)
+        )
+
+    def check_map_is_end(self):
+        if self.note_list[-1].get_remain_value() < -2000:
+            self.framework.push_scene(
+                clear_scene.ClearScene(
+                    self.framework,
+                    int(self.score.get_score()),
+                    int(self.score.get_accuracy_percent())
+                )
+            )
 
     def check_note_accuracy(self, player_input):
         count = self.extra_check_count
