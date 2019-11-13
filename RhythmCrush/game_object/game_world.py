@@ -1,13 +1,17 @@
 from ..interface import IUpdatableObject, IDrawableObject
 
 class GameWorld(IUpdatableObject, IDrawableObject):
-    def __init__(self,layer_count: int = 3):
+    def __init__(self, layer_count: int = 3):
         self.obj_layer = []
         for i in range(3):
             self.obj_layer.append([])
 
     def __del__(self):
         self.clear()
+
+    def add_layer(self, count=1):
+        for i in range(count):
+            self.obj_layer.append([])
 
     def add_object(self, obj, layer):
         self.obj_layer[layer].append(obj)
