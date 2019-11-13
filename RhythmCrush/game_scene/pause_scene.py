@@ -47,6 +47,9 @@ class PauseScene(BaseScene):
         def game_end():
             self.framework.exit()
 
+        def return_game():
+            self.framework.pop_scene()
+
         def arrow_up():
             self.csr = pico2d.clamp(0, self.csr-1, 2)
 
@@ -65,17 +68,17 @@ class PauseScene(BaseScene):
         def menu_func():
             print(self.csr)
             if self.csr == 2:
-                self.framework.exit()
+                game_end()
             elif self.csr == 1:
                 move_menu()
             elif self.csr == 0:
-                self.framework.pop_scene()
+                return_game()
                 pass
         # 콜백 함수 종료
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
-            handler_set.key_input(pico2d.SDLK_ESCAPE, game_end)
+            handler_set.key_input(pico2d.SDLK_ESCAPE, return_game)
         )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
@@ -107,5 +110,9 @@ class PauseScene(BaseScene):
         )
         self.input_handler.add_handler(
             pico2d.SDL_MOUSEBUTTONDOWN,
-            handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, move_menu, self.button[0])
+            handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, menu_func, self.button[0])
+        )
+        self.input_handler.add_handler(
+            pico2d.SDL_MOUSEBUTTONDOWN,
+            handler_set.mouse_button_input(pico2d.SDL_BUTTON_LEFT, menu_func, self.button[2])
         )
