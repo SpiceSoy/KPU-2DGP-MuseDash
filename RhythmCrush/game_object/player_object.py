@@ -6,10 +6,13 @@ from .. import handler_set
 
 # 애니메이션 및 입력 테스트용
 class Player(IUpdatableObject, IDrawableObject):
-    def __init__(self):
-        self.x = 0
-        self.y = 0
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
         self.image_controller = image_manager.get_image_controller('player-trex')
+
+    def load(self):
+        pass
 
     def post_handler(self, input_handler: input_manager.InputHandlerManager):
         def change_run():
