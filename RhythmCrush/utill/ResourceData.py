@@ -23,7 +23,12 @@ image_url_dic = {
         'ui-csr-48': "UI/csr-48.png",
         'ui-csr-72': "UI/csr-72.png",
         'ui-select-back': "UI/select-menu-back.png",
-        'ui-clear-back' : "UI/clear-menu.png"
+        'ui-clear-back' : "UI/clear-menu.png",
+        'acc-bad': 'Fx/accuracy_effect_bad.png',
+        'acc-good': 'Fx/accuracy_effect_good.png',
+        'acc-miss': 'Fx/accuracy_effect_miss.png',
+        'acc-nice': 'Fx/accuracy_effect_nice.png',
+        'acc-perfect': 'Fx/accuracy_effect_perfect.png',
 }
 
 image_cache = {}
