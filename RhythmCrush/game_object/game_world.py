@@ -18,7 +18,7 @@ class GameWorld(IUpdatableObject, IDrawableObject):
 
     def delete_object(self, obj):
         for i in range(len(self.obj_layer)):
-            if obj in self.obj_layer:
+            if obj in self.obj_layer[i]:
                 self.obj_layer[i].remove(obj)
                 del obj
 
