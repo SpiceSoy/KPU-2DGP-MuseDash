@@ -55,7 +55,7 @@ class NotePlayScene(BaseScene):
         self.player = Player(100, 400)
 
         # 노트 컨테이너
-        self.notes = NoteContainer(music_tag, self.music.timer, self.hp, self.score, self.combo,
+        self.notes = NoteContainer(music_tag, self.music.timer, self.game_world, self.hp, self.score, self.combo,
                                    self.effect_don_normal, self.effect_don_hit,
                                    self.effect_kat_normal, self.effect_kat_hit,
                                     self.effect_combo_break)

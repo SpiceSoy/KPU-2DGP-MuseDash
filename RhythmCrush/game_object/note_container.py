@@ -4,11 +4,13 @@ from RhythmCrush import handler_set
 from RhythmCrush.game_object.note import *
 from RhythmCrush.utill.input_manager import *
 from RhythmCrush.utill.osu_file_format_parser import *
+from RhythmCrush.game_object.accuracy_effect import *
 
 
 class NoteContainer(IUpdatableObject, IDrawableObject):
-    def __init__(self, music_tag, music_timer, hp, score, combo,
+    def __init__(self, music_tag, music_timer, world, hp, score, combo,
                  effect_don_normal, effect_don_hit, effect_kat_normal, effect_kat_hit, effect_combo_break):
+        self.world = world
         self.music_tag = music_tag
         self.music_timer = music_timer
         self.map = MusicNoteMap()
@@ -51,6 +53,7 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
             if note.check_no_input():
                 self.hp.check(note.accuracy.grade)
                 self.score.add_score(note.accuracy)
+                self.spawn_effect(AccuracyGrade.Miss)
                 if not self.combo.is_zero():
                     self.effect_combo_break.play()
                 self.combo.break_combo()
@@ -90,6 +93,10 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
     def get_props(self, title: str):
         return self.map.get_props(title)
 
+    def spawn_effect(self, acc):
+        if Judgement.is_hit(acc):
+            self.world.add_object(AccuracyEffect(150, 400, acc, self.world), 3)
+
     def post_handler(self, input_handler: InputHandlerManager):
         def touch_type(type, hit, normal):
             def touch():
@@ -98,6 +105,7 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
                 self.score.add_score(ac)
                 print(f"grade : {ac.grade} / diff_time : {ac.difference}")
                 print(f"{str(self.combo)} / current_hp : {self.hp.get_hp()}")
+                self.spawn_effect(ac.grade)
                 if ac.is_success():
                     hit.play()
                     self.combo.plus_combo()
