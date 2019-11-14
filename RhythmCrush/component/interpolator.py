@@ -43,6 +43,18 @@ class FixedRatioInterpolator(BaseInterpolator):
             self.src = self.dest
         self.src = self.current_value
 
+class DeltatimeRatioInterpolator(BaseInterpolator):
+    def __init__(self, src, dest, ratio=0.25):
+        super().__init__(src, dest)
+        self.ratio = ratio
+
+    def update(self, delta_time):
+        self.current_value = super().interpolator(self.src, self.dest, self.ratio * delta_time)
+        if abs(self.current_value - self.dest) < 0.001:
+            self.current_value = self.dest
+            self.src = self.dest
+        self.src = self.current_value
+
 
 # 고정 속도
 class FixedSpeedInterpolator(BaseInterpolator):
