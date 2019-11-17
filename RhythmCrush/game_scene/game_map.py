@@ -8,6 +8,7 @@ from RhythmCrush.game_scene import clear_scene
 from RhythmCrush.game_object.note import Note
 from RhythmCrush.game_object.note_container import NoteContainer
 from RhythmCrush.game_object.player_object import Player
+from RhythmCrush.game_object.loop_image import HorizontalLoopImage
 
 from RhythmCrush.component.game_music import Music, Effect
 from RhythmCrush.component.combo import Combo
@@ -18,12 +19,14 @@ from RhythmCrush.component.accuracy import *
 
 from RhythmCrush import ui
 from RhythmCrush import handler_set
+from RhythmCrush.utill.font_manager import *
 
 from RhythmCrush.utill.osu_file_format_parser import *
 from RhythmCrush.component.interpolator import *
 
 
 class NotePlayScene(BaseScene):
+    normal_text_color = (83, 83, 83)
     def __init__(self, framework, music_tag):
         # 베이스 초기화
         super().__init__(framework)
@@ -44,15 +47,24 @@ class NotePlayScene(BaseScene):
         self.hp = Hp()
         self.score = Score()
 
+        self.speed = 1000.0
+
         # 수치 인터포레이터
         self.hp_interpolator = FixedRatioInterpolator(self.hp.get_hp(), self.hp.get_hp(), 0.05)
         self.score_interpolator = FixedRatioInterpolator(self.score.get_score(), self.score.get_score(), 0.25)
         self.percent_interpolator = FixedRatioInterpolator(
             self.score.get_accuracy_percent(), self.score.get_accuracy_percent(), 0.25
         )
+        self.speed_interpolator = FixedRatioInterpolator(self.speed, self.speed, 0.05)
 
         # 플레이어
         self.player = Player(100, 400)
+
+        # 배경 루프 이미지
+        self.back_image = ui.UIStaticImage(self.framework.w/2, self.framework.h/2, 'ui-game-back')
+        self.ground_loop_image = HorizontalLoopImage(
+            self.framework.w/2, self.framework.h/2 - 60, self.framework.w, self.framework.h, 'loop-ground', 1000
+        )
 
         # 노트 컨테이너
         self.notes = NoteContainer(music_tag, self.music.timer, self.game_world, self.hp, self.score, self.combo,
@@ -61,18 +73,29 @@ class NotePlayScene(BaseScene):
                                     self.effect_combo_break)
 
         # UI
-        self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo, pt=100)
-        self.ui_hp = ui.UIProgressBar(700, 600, 'ui-hp')
-        self.ui_score = ui.UIText(100, self.framework.h - 100, self.score.get_score(), pt=25)
-        self.ui_acc_percent = ui.UIText(10, 50, str(self.score.get_accuracy_percent()), pt=100)
+        self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo,
+                                       FontType.Fixedsys, pt=100, color=NotePlayScene.normal_text_color)
+
+        self.ui_hp = ui.UIProgressBar(400, 750, 'ui-hp')
+        self.ui_score = ui.UIText(850, 750, self.score.get_score(), FontType.Fixedsys,
+                                  pt=75, color=NotePlayScene.normal_text_color)
+        self.ui_acc_percent = ui.UIText(10, 50, str(self.score.get_accuracy_percent()), FontType.Fixedsys,
+                                        pt=100,color=NotePlayScene.normal_text_color)
+
+        self.ui_cur_speed = ui.UIText(400, 50, str(self.speed_interpolator.get_current_value() / 1000.0)[:3], FontType.Fixedsys,
+                                        pt=100, color=NotePlayScene.normal_text_color)
+
 
         self.game_world.add_layer()
+        self.game_world.add_object(self.back_image, 0)
         self.game_world.add_object(self.player, 1)
+        self.game_world.add_object(self.ground_loop_image, 1)
         self.game_world.add_object(self.notes, 2)
         self.game_world.add_object(self.ui_combo_text, 3)
         self.game_world.add_object(self.ui_hp, 3)
         self.game_world.add_object(self.ui_score, 3)
         self.game_world.add_object(self.ui_acc_percent, 3)
+        self.game_world.add_object(self.ui_cur_speed, 3)
 
     def load(self):
         super().load()
@@ -84,6 +107,10 @@ class NotePlayScene(BaseScene):
         self.effect_kat_hit.load("Resource/Sound/kat-hit.wav")
         self.effect_kat_normal.load("Resource/Sound/kat-normal.wav")
         self.effect_combo_break.load("Resource/Sound/combo-break.wav")
+        pico2d.hide_lattice()
+
+    def draw(self):
+        super().draw()
 
     def start(self):
         super().start()
@@ -110,17 +137,29 @@ class NotePlayScene(BaseScene):
         self.score_interpolator.update(delta_time)
         self.percent_interpolator.dest = self.score.get_accuracy_percent()
         self.percent_interpolator.update(delta_time)
+        self.speed_interpolator.dest = self.speed
+        self.speed_interpolator.update(delta_time)
 
         # UIUpdate
         self.ui_combo_text.update_text(f"COMBO : {self.combo.now_combo}")
         self.ui_score.update_text(f"SCORE : {int(self.score_interpolator.get_current_value())}")
         self.ui_acc_percent.update_text(f"{int(self.percent_interpolator.get_current_value())}%")
         self.ui_hp.update_value(self.hp_interpolator.get_current_value(), self.hp.max_hp)
+        self.ui_cur_speed.update_text(str(self.speed_interpolator.get_current_value() / 1000.0)[:3])
         if self.hp.get_hp() <= 0:
             self.framework.change_scene(fail_scene.FailScene(self.framework))
         self.check_game_is_end()
 
+        self.notes.set_note_speed(self.speed_interpolator.get_current_value())
+        self.ground_loop_image.set_speed(self.speed_interpolator.get_current_value())
+
     def post_handler(self):
+
+        def get_change_speed(delta):
+            def change_speed():
+                self.speed += delta
+            return change_speed
+
         def enter_pause_scene():
             self.framework.push_scene(pause_scene.PauseScene(self.framework))
 
@@ -131,6 +170,14 @@ class NotePlayScene(BaseScene):
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_ESCAPE, enter_pause_scene)
+        )
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_LEFT, get_change_speed(-100.0))
+        )
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_RIGHT, get_change_speed(100.0))
         )
         self.player.post_handler(self.input_handler)
         self.notes.post_handler(self.input_handler)

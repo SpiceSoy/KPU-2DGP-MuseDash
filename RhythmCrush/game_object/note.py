@@ -10,13 +10,14 @@ from RhythmCrush.interface import IDrawableObject
 # note_img_dic = {0: 'note-don', 4: 'note-big-don', 8: 'note-kat', 12: 'note-big-kat'}
 note_img_dic = {0: 'note-don', 4: 'note-don', 8: 'note-kat', 12: 'note-kat', 6: 'note-kat'}
 note_type_dic = {0: InputType.Don, 4: InputType.Don, 8: InputType.Kat, 12: InputType.Kat, 6: InputType.Kat}
+type_y_dic = {InputType.Don: 405 - 25, InputType.Kat: 405 + 60}
 randomize_note_csr = {0: True, 4: False, 8: True, 12: False, 6: False}
 randomize_note_time = {0: True, 4: False, 8: False, 12: False, 6: False}
 
 
 class Note(IUpdatableObject, IDrawableObject):
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
-                 speed=1, clip_x=1440, clip_y=810, line_x=100, line_y=405):
+                 speed=1000, clip_x=1440, clip_y=810, line_x=100, line_y=405):
         # 여기부터
         self.x = -1000
         self.y = -1000
@@ -42,7 +43,7 @@ class Note(IUpdatableObject, IDrawableObject):
         self.clip_x = clip_x
         self.clip_y = clip_y
         self.line_x = line_x
-        self.line_y = line_y
+        self.line_y = type_y_dic[note_type_dic[self.hit_sound]]
         self.update_start_time = 5000
         # TODO 실제 들어오는 Type 값에 맞춰서 변경 필요
         # self.image = image_manager.load_image(note_type_dic[note_type])
@@ -59,7 +60,7 @@ class Note(IUpdatableObject, IDrawableObject):
 
     def calculate_current_position(self):
         remain_value = self.get_remain_value()
-        self.x = self.line_x + remain_value * self.speed
+        self.x = self.line_x + remain_value * (self.speed/1000.0)
         self.y = self.line_y
         return self.update_start_time > remain_value
 

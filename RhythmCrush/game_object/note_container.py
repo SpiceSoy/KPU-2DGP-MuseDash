@@ -95,7 +95,11 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
 
     def spawn_effect(self, acc):
         if Judgement.is_hit(acc):
-            self.world.add_object(AccuracyEffect(150, 400, acc, self.world), 3)
+            self.world.add_object(AccuracyEffect(150, 450, acc, self.world), 3)
+
+    def set_note_speed(self, speed):
+        for n in self.note_list:
+            n.set_note_speed(speed)
 
     def post_handler(self, input_handler: InputHandlerManager):
         def touch_type(type, hit, normal):
