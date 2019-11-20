@@ -31,6 +31,7 @@ image_url_dic = {
         'acc-nice': 'Fx/accuracy_effect_nice.png',
         'acc-perfect': 'Fx/accuracy_effect_perfect.png',
         'loop-ground': 'Fx/ground.png',
+        'slide-back-fx': 'Fx/slide-note-fx.png'
 }
 
 image_cache = {}
