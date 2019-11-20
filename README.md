@@ -10,5 +10,3 @@ Python 3.7.4 (64bit) / Windows
 
 ### 사용 라이브러리
 pico2d, parse
-
-이슈는 메모장 비슷하게 사용
