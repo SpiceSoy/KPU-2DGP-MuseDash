@@ -75,7 +75,8 @@ class Judgement:
 
 
 class Accuracy:
-    def __init__(self, difference=None):
+    def __init__(self, difference=None, slide=False):
+        self.slide = slide
         if difference is not None:
             self.judge(difference)
         else:
@@ -101,7 +102,11 @@ class Accuracy:
         return Judgement.is_fail(self.grade)
 
     def is_gone(self):
-        return self.difference < -Judgement.hit_range_tick or self.grade != AccuracyGrade.Ignore
+        print(f"slide : {self.slide}")
+        if self.slide:
+            return False
+        else:
+            return self.difference < -Judgement.hit_range_tick or self.grade != AccuracyGrade.Ignore
 
     def check_no_input(self, difference):
         if self.grade == AccuracyGrade.Ignore and Judgement.check_no_input(difference) == True:

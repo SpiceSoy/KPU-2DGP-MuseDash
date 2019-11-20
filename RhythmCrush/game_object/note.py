@@ -30,8 +30,11 @@ class Note(IUpdatableObject, IDrawableObject):
         if extras[0].find(',') is -1:
             self.end_time = 0
         else:
+            print(extra_zero)
             result = parse.parse("{},{}", extra_zero)
             self.end_time = int(result[0])
+            self.accuracy.slide = True
+            print(f"슬라이더 or 스핀 {self.end_time - self.time} 존재")
             extra_zero = result[1]
 
         self.extras = (int(extra_zero), int(extras[1]), int(extras[2]), int(extras[3]))
@@ -45,13 +48,14 @@ class Note(IUpdatableObject, IDrawableObject):
         self.line_x = line_x
         self.line_y = type_y_dic[note_type_dic[self.hit_sound]]
         self.update_start_time = 5000
-        # TODO 실제 들어오는 Type 값에 맞춰서 변경 필요
-        # self.image = image_manager.load_image(note_type_dic[note_type])
+
         self.image = image_manager.get_image_controller(
             note_img_dic[self.hit_sound],
             randomize_note_csr[self.hit_sound],
             randomize_note_time[self.hit_sound]
         )
+        self.long_fx = image_manager.get_image_controller('slide-back-fx')
+
         pass
 
     def get_remain_value(self):
@@ -80,10 +84,17 @@ class Note(IUpdatableObject, IDrawableObject):
         return will_continue
 
     def is_in_clipped(self):
-        padding = 200
+        if self.end_time != 0:
+            padding = (self.end_time - self.time) * (self.speed/1000.0) + 200
+        else:
+            padding = 200
         return -padding <= self.x <= self.clip_x + padding and -padding <= self.y <= self.clip_y + padding
 
     def draw(self):
+        if self.end_time != 0:
+            width = (self.end_time - self.time) * (self.speed/1000.0)
+            height = self.long_fx.image.h
+            self.long_fx.draw(self.x + width/2, self.y, width, height)
         self.image.draw(self.x, self.y)
 
     def check_note_accuracy(self):
@@ -91,8 +102,21 @@ class Note(IUpdatableObject, IDrawableObject):
         return self.accuracy.grade
 
     def check_hit(self, player_input):
-        self.accuracy.judge(self.get_remain_value(), player_input, note_type_dic[self.hit_sound])
+        if self.end_time != 0:
+            print("CheckHit")
+            if (self.time - self.end_time) < self.get_remain_value() < 0:
+                self.accuracy.judge(0, note_type_dic[self.hit_sound], note_type_dic[self.hit_sound])
+            else:
+                self.accuracy.judge(self.get_remain_value(), player_input, note_type_dic[self.hit_sound])
+        else:
+            self.accuracy.judge(self.get_remain_value(), player_input, note_type_dic[self.hit_sound])
         return self.accuracy
 
     def check_no_input(self):
-        return self.accuracy.check_no_input(self.get_remain_value())
+        return self.accuracy.check_no_input(self.get_remain_value()) and self.end_time == 0
+
+    def check_gone(self):
+        if self.end_time != 0:
+            return self.get_remain_value() + (self.end_time - self.time) < -500
+        else:
+            return self.get_remain_value() < -500

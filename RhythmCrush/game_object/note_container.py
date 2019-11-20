@@ -59,7 +59,7 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
                 self.combo.break_combo()
             if note.update(delta_time) is False:
                 count -= 1
-            if note.time - self.music_timer.get_time_tick() < -500:
+            if note.check_gone():
                 self.start_index = i
             if count < 0:
                 break;
@@ -78,14 +78,18 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
 
     def check_note_accuracy(self, player_input):
         count = self.extra_check_count
-        for i in range(self.start_index, len(self.note_list)):
+        # for i in range(self.start_index, len(self.note_list)):
+        for i in range(0, len(self.note_list)):
             note = self.note_list[i]
             if not note.accuracy.is_gone():
+                print(f"Not Gone : {i}")
                 acc = note.check_hit(player_input)
                 if acc.is_hit():
                     return acc
                 else:
                     count -= 1
+            else:
+                print(f"Gone : {i}")
             if count < 0:
                 return Accuracy()
         return Accuracy()
