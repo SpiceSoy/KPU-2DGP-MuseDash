@@ -15,7 +15,8 @@ def load_image(tag):
             ResourceData.image_cache[ResourceData.image_url_dic[tag]] = ret_image
         return ret_image
     else:
-        print(f"Image Dic has NOT Image {tag}")
+        return pico2d.load_image(tag)
+        # print(f"Image Dic has NOT Image {tag}")
 
 
 def load_animator(tag):

@@ -5,6 +5,7 @@ class MusicMetaData:
     def __init__(self):
         self.title = None
         self.artist = None
+        self.url_art = None
         self.url_difficult_normal = None
         self.url_difficult_hard = None
         self.url_difficult_extreme = None
@@ -40,6 +41,7 @@ def load_music_metadata(data: dict):
     ret = MusicMetaData()
     ret.title = data['title']
     ret.artist = data['artist']
+    ret.url_art = data['art_url']
     ret.url_difficult_normal = data['normal_url'] if 'normal_url' in data.keys() else None
     ret.url_difficult_hard = data['hard_url'] if 'hard_url' in data.keys() else None
     ret.url_difficult_extreme = data['extreme_url'] if 'extreme_url' in data.keys() else None

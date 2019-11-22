@@ -1,6 +1,7 @@
 from ..game_scene.base_scene import BaseScene
 
 from RhythmCrush.component import music_meta_data
+from RhythmCrush.utill import image_manager
 from ..utill import ResourceData
 
 from .. import handler_set
@@ -54,6 +55,7 @@ class SelectScene(BaseScene):
                                              pt=72, color=SelectScene.normal_text_color)
         self.ui_difficult_extreme_text = UIText(1028, self.framework.h - 592, "EXTREME", FontType.Fixedsys,
                                                 pt=72, color=SelectScene.normal_text_color)
+        self.ui_art_image = UIStaticImage(772, self.framework.h - 505, 'ui-default-art', w=326, h=326)
 
         self.game_world.add_object(self.background_image, 0)
         self.game_world.add_object(self.csr_image, 2)
@@ -62,8 +64,21 @@ class SelectScene(BaseScene):
         self.game_world.add_object(self.ui_difficult_normal_text, 1)
         self.game_world.add_object(self.ui_difficult_hard_text, 1)
         self.game_world.add_object(self.ui_difficult_extreme_text, 1)
+        self.game_world.add_object(self.ui_art_image, 2)
+
+        self.art_image_list = []
+        for data in self.music_list:
+            url = data.url_art
+            if url == "":
+                url = 'ui-default-art'
+            self.art_image_list.append(image_manager.get_image_controller(url))
+
         for obj in self.ui_music_list:
             self.game_world.add_object(obj, 1)
+
+    def load(self):
+        super().load()
+        self.ui_art_image.image_controller = self.art_image_list[0]
 
     def update(self, delta_time):
         for i in range(len(self.ui_music_list)):
@@ -96,9 +111,13 @@ class SelectScene(BaseScene):
 
     def post_handler(self):
         # 콜백 함수 시작
+        def change_art():
+            self.ui_art_image.image_controller = self.art_image_list[self.csr_music]
+
         def arrow_up():
             if self.csr_difficult == -1:
                 self.csr_music = pico2d.clamp(0, self.csr_music - 1, len(self.music_list)-1)
+                change_art()
             else:
                 # 앞의 난이도로 이동
                 difficult_list = self.music_list[self.csr_music].get_difficult_csr_list()
@@ -107,6 +126,7 @@ class SelectScene(BaseScene):
         def arrow_down():
             if self.csr_difficult == -1:
                 self.csr_music = pico2d.clamp(0, self.csr_music + 1, len(self.music_list)-1)
+                change_art()
             else:
                 # 뒤의 난이도로 이동
                 difficult_list = self.music_list[self.csr_music].get_difficult_csr_list()
@@ -132,6 +152,7 @@ class SelectScene(BaseScene):
             def ret():
                 self.csr_music = csr
                 self.csr_difficult = -1
+                change_art()
             return ret
 
         def get_difficult_csr_set_func(csr):
