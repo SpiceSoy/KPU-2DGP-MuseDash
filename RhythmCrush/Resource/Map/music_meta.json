@@ -4,41 +4,34 @@
       "artist": "BlackY",
       "normal_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu",
       "hard_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Mid's Muzukashii].osu",
-      "extreme_url" : ""
+      "extreme_url" : "",
+      "art_url": "Resource/Map/Third/art.png"
     },
     {
       "title" : "Rebellio",
       "artist": "DJ TOTTO",
       "normal_url" : "Resource/Map/Four/mona.osu",
       "hard_url" : "Resource/Map/Four/MAX MAXIMIZER vs. DJ TOTTO - Rebellio (Realazy) [AYYRI'S MUZUKASHII].osu",
-      "extreme_url" : ""
+      "extreme_url" : "",
+      "art_url": ""
+
     },
     {
       "title" : "Chirality",
       "artist": "Camellia",
       "normal_url": "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Kantan].osu",
       "hard_url" : "",
-      "extreme_url" : ""
+      "extreme_url" : "",
+      "art_url": "Resource/Map/Second/art.jpg"
+
     },
     {
       "title" : "Exit This Earth's Atomosphere",
       "artist": "Camellia",
       "normal_url" : "Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu",
       "hard_url" : "",
-      "extreme_url" : ""
-    },
-    {
-      "title" : "Test My TESS",
-      "artist": "KIMKIMKIM",
-      "normal_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu",
-      "hard_url" : "",
-      "extreme_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu"
-    },
-  {
-      "title" : "Test My TESS",
-      "artist": "KIMKIMKIM",
-      "normal_url" : "",
-      "hard_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu",
-      "extreme_url" : "Resource/Map/Third/BlackY - Max Burning!! (SpectorDG) [Senritsu's Futsuu].osu"
+      "extreme_url" : "",
+      "art_url": "Resource/Map/FirstTest/art.jpg"
+
     }
 ]
