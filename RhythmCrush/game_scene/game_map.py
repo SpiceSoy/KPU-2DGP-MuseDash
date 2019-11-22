@@ -7,6 +7,7 @@ from RhythmCrush.game_scene import clear_scene
 
 from RhythmCrush.game_object.note import Note
 from RhythmCrush.game_object.note_container import NoteContainer
+from RhythmCrush.game_object.hit_effect_object import HitEffect
 from RhythmCrush.game_object.player_object import Player
 from RhythmCrush.game_object.loop_image import HorizontalLoopImage
 
@@ -163,6 +164,14 @@ class NotePlayScene(BaseScene):
         def enter_pause_scene():
             self.framework.push_scene(pause_scene.PauseScene(self.framework))
 
+        def up_effect():
+            self.game_world.add_object(HitEffect(200, 400 + 50 + 10, self.game_world), 3)
+            pass
+
+        def down_effect():
+            self.game_world.add_object(HitEffect(200, 400 - 50, self.game_world), 3)
+            pass
+
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_p, enter_pause_scene)
@@ -178,6 +187,15 @@ class NotePlayScene(BaseScene):
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_RIGHT, get_change_speed(100.0))
+        )
+
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_UP, up_effect)
+        )
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_DOWN, down_effect)
         )
         self.player.post_handler(self.input_handler)
         self.notes.post_handler(self.input_handler)
