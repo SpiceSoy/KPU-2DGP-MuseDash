@@ -31,7 +31,9 @@ image_url_dic = {
         'acc-nice': 'Fx/accuracy_effect_nice.png',
         'acc-perfect': 'Fx/accuracy_effect_perfect.png',
         'loop-ground': 'Fx/ground.png',
-        'slide-back-fx': 'Fx/slide-note-fx.png'
+        'slide-back-fx': 'Fx/slide-note-fx.png',
+        'ui-default-art': 'Fx/slide-note-fx.png',
+        'hit-effect': 'Fx/hit-effect.png',
 }
 
 image_cache = {}
@@ -106,7 +108,32 @@ def load_don():
     animators['note-don'] = animator
     pass
 
+def load_effect():
+    animator = Animator()
+    # 기본 서있기
+    # 이동하기
+    move_anim = SubAnimation("def")
+    move_anim.add_frame(0, 0, 128, 128)
+    move_anim.add_frame_other_position(128 * 1, 0)
+    move_anim.add_frame_other_position(128 * 2, 0)
+    move_anim.add_frame_other_position(128 * 3, 0)
+    move_anim.add_frame_other_position(128 * 4, 0)
+    move_anim.add_frame_other_position(128 * 5, 0)
+    move_anim.add_frame_other_position(128 * 6, 0)
+    move_anim.add_frame_other_position(128 * 7, 0)
+    animator.add_sub_animation("exp", move_anim)
 
+    def_anim = SubAnimation("repeat")
+    def_anim.add_frame(0, 0, 0, 0)
+    animator.add_sub_animation("def", def_anim)
+
+    animator.change_current_animation("exp")
+
+    animators['hit-effect'] = animator
+    pass
+
+
+load_effect()
 load_player()
 load_don()
 load_kat()
