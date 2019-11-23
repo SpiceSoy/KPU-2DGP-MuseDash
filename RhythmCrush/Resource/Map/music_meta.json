@@ -8,15 +8,6 @@
       "art_url": "Resource/Map/Third/art.png"
     },
     {
-      "title" : "Rebellio",
-      "artist": "DJ TOTTO",
-      "normal_url" : "Resource/Map/Four/mona.osu",
-      "hard_url" : "Resource/Map/Four/MAX MAXIMIZER vs. DJ TOTTO - Rebellio (Realazy) [AYYRI'S MUZUKASHII].osu",
-      "extreme_url" : "",
-      "art_url": ""
-
-    },
-    {
       "title" : "Chirality",
       "artist": "Camellia",
       "normal_url": "Resource/Map/Second/Camellia - Chirality (_DUSK_) [Kantan].osu",
@@ -36,9 +27,33 @@
       {
       "title" : "Wake Up",
       "artist": "you",
-      "normal_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Futsuu].osu",
-      "hard_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Kantan].osu",
+      "normal_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Kantan].osu",
+      "hard_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Futsuu].osu",
       "extreme_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Oni].osu",
       "art_url": "Resource/Map/WAKEUP/art.png"
+    },
+    {
+      "title" : "Move That Body",
+      "artist": "Expander",
+      "normal_url" : "Resource/Map/MOVE/Expander - Move That Body (iceOC) [Kantan].osu",
+      "hard_url" : "Resource/Map/MOVE/Expander - Move That Body (iceOC) [Ayyri's Futsuu].osu",
+      "extreme_url" : "Resource/MOVE/WAKEUP/Expander - Move That Body (iceOC) [Oni].osu",
+      "art_url": "Resource/Map/MOVE/art.png"
+    },
+  {
+      "title" : "On the FM",
+      "artist": "C-Show",
+      "normal_url" : "Resource/Map/FM/C-Show - On the FM (Nofool) [Kantan].osu",
+      "hard_url" : "Resource/Map/FM/C-Show - On the FM (Nofool) [Futsuu].osu",
+      "extreme_url" : "Resource/Map/FM/C-Show - On the FM (Nofool) [Inner Oni].osu",
+      "art_url": "Resource/Map/FM/art.png"
+    },
+    {
+      "title" : "HAVOX",
+      "artist": "BlackY vs Yooh",
+      "normal_url" : "Resource/Map/HAVOX/BlackY vs. Yooh - HAVOX (Arrival) [Kantan].osu",
+      "hard_url" : "Resource/Map/HAVOX/BlackY vs. Yooh - HAVOX (Arrival) [Muzukashii].osu",
+      "extreme_url" : "Resource/Map/HAVOX/BlackY vs. Yooh - HAVOX (Arrival) [Unmei's Oni].osu",
+      "art_url": "Resource/Map/HAVOX/art.png"
     }
 ]
