@@ -46,7 +46,7 @@ class Framework:
         self.is_active = False
 
     def change_scene(self, scene_inst):
-        if len(self.scene_stack) > 0:
+        while len(self.scene_stack) > 0:
             self.scene_stack[-1].stop()
             self.scene_stack.pop()
         self.scene_stack.append(scene_inst)
@@ -72,7 +72,7 @@ class Framework:
     def custom_audio_init():
         # pico2d 오디오 재설정
         pico2d.Mix_CloseAudio()
-        ret = pico2d.Mix_OpenAudio(44100, pico2d.MIX_DEFAULT_FORMAT, pico2d.MIX_DEFAULT_CHANNELS, 2048)
+        ret = pico2d.Mix_OpenAudio(44100, pico2d.MIX_DEFAULT_FORMAT, pico2d.MIX_DEFAULT_CHANNELS, 1024)
         if -1 == ret:
             print('WARNING: Audio functions are disabled due to speaker or sound problems')
         else:
