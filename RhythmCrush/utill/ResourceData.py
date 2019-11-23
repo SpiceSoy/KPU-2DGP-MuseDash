@@ -34,6 +34,8 @@ image_url_dic = {
         'slide-back-fx': 'Fx/slide-note-fx.png',
         'ui-default-art': 'Fx/slide-note-fx.png',
         'hit-effect': 'Fx/hit-effect.png',
+        'cloud-fx': 'Fx/cloud.png',
+        'ui-hit-line': 'Fx/hit-line.png'
 }
 
 image_cache = {}

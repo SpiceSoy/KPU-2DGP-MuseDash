@@ -9,6 +9,8 @@ from RhythmCrush.game_object.note import Note
 from RhythmCrush.game_object.note_container import NoteContainer
 from RhythmCrush.game_object.hit_effect_object import HitEffect
 from RhythmCrush.game_object.player_object import Player
+from RhythmCrush.game_object.cloud_spawner import CloudSpawner
+from RhythmCrush.game_object.cloud_object import Cloud
 from RhythmCrush.game_object.loop_image import HorizontalLoopImage
 
 from RhythmCrush.component.game_music import Music, Effect
@@ -67,6 +69,9 @@ class NotePlayScene(BaseScene):
             self.framework.w/2, self.framework.h/2 - 60, self.framework.w, self.framework.h, 'loop-ground', 1000
         )
 
+        # 배경 구름
+        self.cloud_spawner = CloudSpawner(self.game_world)
+
         # 노트 컨테이너
         self.notes = NoteContainer(music_tag, self.music.timer, self.game_world, self.hp, self.score, self.combo,
                                    self.effect_don_normal, self.effect_don_hit,
@@ -86,8 +91,11 @@ class NotePlayScene(BaseScene):
         self.ui_cur_speed = ui.UIText(400, 50, str(self.speed_interpolator.get_current_value() / 1000.0)[:3], FontType.Fixedsys,
                                         pt=100, color=NotePlayScene.normal_text_color)
 
+        self.ui_hit_line = ui.UIStaticImage(200, self.framework.h/2, 'ui-hit-line')
+
 
         self.game_world.add_layer()
+        self.game_world.add_object(self.cloud_spawner, 0)
         self.game_world.add_object(self.back_image, 0)
         self.game_world.add_object(self.player, 1)
         self.game_world.add_object(self.ground_loop_image, 1)
@@ -97,6 +105,7 @@ class NotePlayScene(BaseScene):
         self.game_world.add_object(self.ui_score, 3)
         self.game_world.add_object(self.ui_acc_percent, 3)
         self.game_world.add_object(self.ui_cur_speed, 3)
+        self.game_world.add_object(self.ui_hit_line, 3)
 
     def load(self):
         super().load()
@@ -154,6 +163,10 @@ class NotePlayScene(BaseScene):
         self.notes.set_note_speed(self.speed_interpolator.get_current_value())
         self.ground_loop_image.set_speed(self.speed_interpolator.get_current_value())
 
+        for o in self.game_world.all_object():
+            if type(o) == Cloud:
+                o.speed = self.speed_interpolator.get_current_value()
+
     def post_handler(self):
 
         def get_change_speed(delta):
@@ -166,11 +179,9 @@ class NotePlayScene(BaseScene):
 
         def up_effect():
             self.game_world.add_object(HitEffect(200, 400 + 50 + 10, self.game_world), 3)
-            pass
 
         def down_effect():
             self.game_world.add_object(HitEffect(200, 400 - 50, self.game_world), 3)
-            pass
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
