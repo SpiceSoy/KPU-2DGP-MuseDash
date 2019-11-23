@@ -23,5 +23,4 @@ class HitEffect(IUpdatableObject, IDrawableObject):
     def update(self, delta_time):
         self.image_controller.update(delta_time)
         if self.image_controller.animator.current_key == "def":
-            print("DELETE EFFECT")
             self.game_world.delete_object(self)

@@ -17,7 +17,8 @@ class AccuracyGrade(enum.Enum):
 
 
 class Judgement:
-    hit_range_tick = 250
+    sync_time = 0.0
+    hit_range_tick = 400
     perfect_ratio = 0.1
     nice_ratio = 0.2
     good_ratio = 0.4
@@ -36,6 +37,7 @@ class Judgement:
 
     @staticmethod
     def check_accuracy(difference):
+        difference = difference + Judgement.sync_time
         if abs(difference) > Judgement.hit_range_tick:
             return AccuracyGrade.Ignore
         else:
@@ -102,7 +104,6 @@ class Accuracy:
         return Judgement.is_fail(self.grade)
 
     def is_gone(self):
-        print(f"slide : {self.slide}")
         if self.slide:
             return False
         else:

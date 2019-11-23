@@ -82,14 +82,11 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
         for i in range(0, len(self.note_list)):
             note = self.note_list[i]
             if not note.accuracy.is_gone():
-                print(f"Not Gone : {i}")
                 acc = note.check_hit(player_input)
                 if acc.is_hit():
                     return acc
                 else:
                     count -= 1
-            else:
-                print(f"Gone : {i}")
             if count < 0:
                 return Accuracy()
         return Accuracy()

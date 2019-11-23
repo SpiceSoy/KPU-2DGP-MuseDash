@@ -17,7 +17,7 @@ randomize_note_time = {0: True, 4: False, 8: False, 12: False, 6: False}
 
 class Note(IUpdatableObject, IDrawableObject):
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
-                 speed=1000, clip_x=1440, clip_y=810, line_x=100, line_y=405):
+                 speed=1000, clip_x=1440, clip_y=810, line_x=300, line_y=405):
         # 여기부터
         self.x = -1000
         self.y = -1000

@@ -21,6 +21,7 @@ class GameWorld(IUpdatableObject, IDrawableObject):
             if obj in self.obj_layer[i]:
                 self.obj_layer[i].remove(obj)
                 del obj
+                break;
 
     def clear(self):
         for obj in self.all_object():
