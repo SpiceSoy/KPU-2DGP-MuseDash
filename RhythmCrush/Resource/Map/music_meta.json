@@ -28,10 +28,17 @@
     {
       "title" : "Exit This Earth's Atomosphere",
       "artist": "Camellia",
-      "normal_url" : "Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu",
+      "normal_url" : "",
       "hard_url" : "",
-      "extreme_url" : "",
+      "extreme_url" : "Resource/Map/FirstTest/Camellia - Exit This Earth's Atomosphere (Camellia's PLANETARY200STEP Remix) (nyanmi-1828) [Satellite].osu",
       "art_url": "Resource/Map/FirstTest/art.jpg"
-
+    },
+      {
+      "title" : "Wake Up",
+      "artist": "you",
+      "normal_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Futsuu].osu",
+      "hard_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Kantan].osu",
+      "extreme_url" : "Resource/Map/WAKEUP/you - Wake Up (komasy) [Oni].osu",
+      "art_url": "Resource/Map/WAKEUP/art.png"
     }
 ]
