@@ -2,6 +2,7 @@ from RhythmCrush.interface.Interface import IUpdatableObject, IDrawableObject
 
 from RhythmCrush import handler_set
 from RhythmCrush.game_object.note import *
+from RhythmCrush.game_object.hit_effect_object import *
 from RhythmCrush.utill.input_manager import *
 from RhythmCrush.utill.osu_file_format_parser import *
 from RhythmCrush.game_object.accuracy_effect import *
@@ -84,6 +85,8 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
             if not note.accuracy.is_gone():
                 acc = note.check_hit(player_input)
                 if acc.is_hit():
+                    note.on_hit()
+                    self.world.add_object(HitEffect(note.x, note.y, self.world), 3)
                     return acc
                 else:
                     count -= 1

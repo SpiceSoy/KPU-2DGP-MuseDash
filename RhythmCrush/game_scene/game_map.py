@@ -178,10 +178,12 @@ class NotePlayScene(BaseScene):
             self.framework.push_scene(pause_scene.PauseScene(self.framework))
 
         def up_effect():
-            self.game_world.add_object(HitEffect(200, 400 + 50 + 10, self.game_world), 3)
+            # self.game_world.add_object(HitEffect(200, 400 + 50 + 10, self.game_world), 3)
+            pass
 
         def down_effect():
-            self.game_world.add_object(HitEffect(200, 400 - 50, self.game_world), 3)
+            # self.game_world.add_object(HitEffect(200, 400 - 50, self.game_world), 3)
+            pass
 
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,

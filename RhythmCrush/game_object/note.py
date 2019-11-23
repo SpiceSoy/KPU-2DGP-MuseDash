@@ -17,7 +17,7 @@ randomize_note_time = {0: True, 4: False, 8: False, 12: False, 6: False}
 
 class Note(IUpdatableObject, IDrawableObject):
     def __init__(self, x, y, time, note_type, hit_sound, extras, music_timer,
-                 speed=1000, clip_x=1440, clip_y=810, line_x=300, line_y=405):
+                 speed=1000, clip_x=1440, clip_y=810, line_x=200, line_y=405):
         # 여기부터
         self.x = -1000
         self.y = -1000
@@ -95,7 +95,10 @@ class Note(IUpdatableObject, IDrawableObject):
             width = (self.end_time - self.time) * (self.speed/1000.0)
             height = self.long_fx.image.h
             self.long_fx.draw(self.x + width/2, self.y, width, height)
-        self.image.draw(self.x, self.y)
+            self.image.draw(self.x, self.y)
+        else:
+            if not Judgement.is_hit(self.accuracy.grade):
+                self.image.draw(self.x, self.y)
 
     def check_note_accuracy(self):
         self.accuracy.judge(self.get_remain_value())
@@ -111,6 +114,9 @@ class Note(IUpdatableObject, IDrawableObject):
         else:
             self.accuracy.judge(self.get_remain_value(), player_input, note_type_dic[self.hit_sound])
         return self.accuracy
+
+    def on_hit(self):
+        print("Note On Hit")
 
     def check_no_input(self):
         return self.accuracy.check_no_input(self.get_remain_value()) and self.end_time == 0
