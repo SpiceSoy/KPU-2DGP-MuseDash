@@ -7,36 +7,38 @@ import time
 
 
 class Music:
-    def __init__(self, url=None):
+    def __init__(self):
         self.music_data = None
         self.timer = Timer()
-        if url is not None:
-            self.load()
+
+    def __del__(self):
+        print("Music Deleted")
+        del self.music_data
 
     def load(self, url):
+        print("Music Loaded" + str(url))
         self.music_data = pico2d.load_music(url)
         
     def start(self):
         self.timer.start()
         self.music_data.play()
+        print("Music Play")
+
 
     def pause(self):
         self.timer.pause()
         self.music_data.pause()
+        print("Music Pause")
 
     def resume(self):
         self.timer.resume()
         self.music_data.resume()
+        print("Music Resume")
 
     def stop(self):
+        self.timer.stop()
         self.music_data.stop()
-
-    def get_length_sec(self):
-        pass
-
-    def get_length_tick(self):
-        pass
-
+        print("Music Stop")
 
 class Effect:
     def __init__(self, url=None):

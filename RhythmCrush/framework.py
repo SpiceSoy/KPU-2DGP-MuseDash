@@ -72,7 +72,7 @@ class Framework:
     def custom_audio_init():
         # pico2d 오디오 재설정
         pico2d.Mix_CloseAudio()
-        ret = pico2d.Mix_OpenAudio(44100, pico2d.MIX_DEFAULT_FORMAT, pico2d.MIX_DEFAULT_CHANNELS, 1024)
+        ret = pico2d.Mix_OpenAudio(44100, pico2d.MIX_DEFAULT_FORMAT, pico2d.MIX_DEFAULT_CHANNELS, 512)
         if -1 == ret:
             print('WARNING: Audio functions are disabled due to speaker or sound problems')
         else:

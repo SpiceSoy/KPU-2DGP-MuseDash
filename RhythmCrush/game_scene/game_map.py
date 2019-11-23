@@ -145,6 +145,9 @@ class NotePlayScene(BaseScene):
 
     def update(self, delta_time):
         super().update(delta_time)
+        # Music
+        self.music.timer.update(delta_time)
+
         # Interpolate
         self.hp_interpolator.dest = self.hp.get_hp()
         self.hp_interpolator.update(delta_time)
