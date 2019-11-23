@@ -4,6 +4,7 @@ from RhythmCrush.game_scene.base_scene import BaseScene
 from RhythmCrush.game_scene import fail_scene
 from RhythmCrush.game_scene import pause_scene
 from RhythmCrush.game_scene import clear_scene
+from RhythmCrush.game_scene import ready_scene
 
 from RhythmCrush.game_object.note import Note
 from RhythmCrush.game_object.note_container import NoteContainer
@@ -79,11 +80,11 @@ class NotePlayScene(BaseScene):
                                     self.effect_combo_break)
 
         # UI
-        self.ui_combo_text = ui.UIText(800, 50, self.combo.now_combo,
+        self.ui_combo_text = ui.UIText(800, 50, str(self.combo.now_combo),
                                        FontType.Fixedsys, pt=100, color=NotePlayScene.normal_text_color)
 
         self.ui_hp = ui.UIProgressBar(400, 750, 'ui-hp')
-        self.ui_score = ui.UIText(850, 750, self.score.get_score(), FontType.Fixedsys,
+        self.ui_score = ui.UIText(850, 750, str(self.score.get_score()), FontType.Fixedsys,
                                   pt=75, color=NotePlayScene.normal_text_color)
         self.ui_acc_percent = ui.UIText(10, 50, str(self.score.get_accuracy_percent()), FontType.Fixedsys,
                                         pt=100,color=NotePlayScene.normal_text_color)
@@ -125,18 +126,22 @@ class NotePlayScene(BaseScene):
     def start(self):
         super().start()
         self.music.start()
+        self.notes.position_update_first()
+        self.framework.push_scene(ready_scene.ReadyScene(self.framework))
 
     def resume(self):
-        super().start()
+        super().resume()
         self.music.resume()
 
     def pause(self):
-        super().start()
+        super().pause()
         self.music.pause()
 
     def stop(self):
         super().stop()
+        print("Child Stop")
         self.music.stop()
+        del self.music
 
     def update(self, delta_time):
         super().update(delta_time)
@@ -175,6 +180,7 @@ class NotePlayScene(BaseScene):
             return change_speed
 
         def enter_pause_scene():
+            self.framework.push_scene(ready_scene.ReadyScene(self.framework))
             self.framework.push_scene(pause_scene.PauseScene(self.framework))
 
         def up_effect():
@@ -215,7 +221,7 @@ class NotePlayScene(BaseScene):
 
     def check_game_is_end(self):
         if self.notes.check_map_is_end():
-            self.framework.push_scene(
+            self.framework.change_scene(
                 clear_scene.ClearScene(
                     self.framework,
                     int(self.score.get_score()),

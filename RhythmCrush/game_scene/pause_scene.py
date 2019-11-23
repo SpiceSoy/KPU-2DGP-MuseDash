@@ -39,7 +39,7 @@ class PauseScene(BaseScene):
         self.csr_image.position[1] = self.csr_y[self.csr]
 
     def draw(self):
-        self.framework.get_index_stack(-2).draw()
+        self.framework.get_index_stack(-3).draw()
         super().draw()
 
     def post_handler(self):

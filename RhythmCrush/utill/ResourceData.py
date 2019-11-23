@@ -35,7 +35,8 @@ image_url_dic = {
         'ui-default-art': 'Fx/slide-note-fx.png',
         'hit-effect': 'Fx/hit-effect.png',
         'cloud-fx': 'Fx/cloud.png',
-        'ui-hit-line': 'Fx/hit-line.png'
+        'ui-hit-line': 'Fx/hit-line.png',
+        'ready-anim': 'Fx/ready.png'
 }
 
 image_cache = {}
@@ -134,8 +135,29 @@ def load_effect():
     animators['hit-effect'] = animator
     pass
 
+def load_ready():
+    animator = Animator()
+    # 기본 서있기
+    # 이동하기
+    move_anim = SubAnimation("def")
+    move_anim.add_frame(0, 810 * 3, 1440, 810, sec=1.0)
+    move_anim.add_frame_other_position(0, 810 * 2)
+    move_anim.add_frame_other_position(0, 810 * 1)
+    move_anim.add_frame_other_position(0, 810 * 0)
+    animator.add_sub_animation("count", move_anim)
+
+    def_anim = SubAnimation("repeat")
+    def_anim.add_frame(0, 0, 0, 0)
+    animator.add_sub_animation("def", def_anim)
+
+    animator.change_current_animation("count")
+
+    animators['ready-anim'] = animator
+    pass
+
 
 load_effect()
 load_player()
 load_don()
 load_kat()
+load_ready()

@@ -36,6 +36,7 @@ class BaseScene(IUpdatableObject, IDrawableObject):
     def stop(self):
         self.timer.stop()
         self.is_active = False
+        print("stopopop")
 
     def handle_input(self):
         self.input_handler.handle_event()

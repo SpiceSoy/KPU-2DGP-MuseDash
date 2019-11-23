@@ -97,6 +97,10 @@ class NoteContainer(IUpdatableObject, IDrawableObject):
     def get_props(self, title: str):
         return self.map.get_props(title)
 
+    def position_update_first(self):
+        for note in self.note_list:
+            note.calculate_current_position()
+
     def spawn_effect(self, acc):
         if Judgement.is_hit(acc):
             self.world.add_object(AccuracyEffect(150, 450, acc, self.world), 3)
