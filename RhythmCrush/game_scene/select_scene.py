@@ -145,7 +145,11 @@ class SelectScene(BaseScene):
             else:
                 from ..game_scene.game_map import NotePlayScene
                 self.framework.change_scene(
-                    NotePlayScene(self.framework, self.music_list[self.csr_music].get_difficult_url(self.csr_difficult))
+                    NotePlayScene(
+                        self.framework, self.music_list[self.csr_music].get_difficult_url(self.csr_difficult),
+                        self.music_list[self.csr_music].title, self.csr_difficult
+                    )
+
                 )
 
         def get_music_csr_set_func(csr):

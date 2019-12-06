@@ -31,13 +31,16 @@ from RhythmCrush.component.interpolator import *
 
 class NotePlayScene(BaseScene):
     normal_text_color = (83, 83, 83)
-    def __init__(self, framework, music_tag):
+    def __init__(self, framework, music_tag, music_name, difficult):
         # 베이스 초기화
         super().__init__(framework)
 
         # 플레이할 음악
         self.music_tag = music_tag
+        print(music_name)
         self.music = Music()
+        self.music_name = music_name
+        self.difficult = difficult
 
         # 효과음
         self.effect_don_normal = Effect()
@@ -227,6 +230,8 @@ class NotePlayScene(BaseScene):
             self.framework.change_scene(
                 clear_scene.ClearScene(
                     self.framework,
+                    self.music_name,
+                    self.difficult,
                     int(self.score.get_score()),
                     int(self.score.get_accuracy_percent())
                 )
