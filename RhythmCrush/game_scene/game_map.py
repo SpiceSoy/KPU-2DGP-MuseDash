@@ -1,4 +1,5 @@
 import pico2d
+import random
 
 from RhythmCrush.game_scene.base_scene import BaseScene
 from RhythmCrush.game_scene import fail_scene
@@ -189,6 +190,18 @@ class NotePlayScene(BaseScene):
             self.framework.push_scene(ready_scene.ReadyScene(self.framework))
             self.framework.push_scene(pause_scene.PauseScene(self.framework))
 
+        def debug_clear():
+            self.framework.change_scene(
+                clear_scene.ClearScene(
+                    self.framework,
+                    self.music_name,
+                    self.difficult,
+                    int(self.score.get_score()),
+                    int(self.score.get_accuracy_percent()),
+                    int(self.combo.max_combo)
+                )
+            )
+
         def up_effect():
             # self.game_world.add_object(HitEffect(200, 400 + 50 + 10, self.game_world), 3)
             pass
@@ -201,6 +214,10 @@ class NotePlayScene(BaseScene):
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_p, enter_pause_scene)
         )
+        # self.input_handler.add_handler(
+        #     pico2d.SDL_KEYDOWN,
+        #     handler_set.key_input(pico2d.SDLK_k, debug_clear)
+        # )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_ESCAPE, enter_pause_scene)
@@ -233,6 +250,7 @@ class NotePlayScene(BaseScene):
                     self.music_name,
                     self.difficult,
                     int(self.score.get_score()),
-                    int(self.score.get_accuracy_percent())
+                    int(self.score.get_accuracy_percent()),
+                    int(self.combo.max_combo)
                 )
             )
