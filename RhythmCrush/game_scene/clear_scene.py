@@ -1,5 +1,5 @@
 from ..game_scene.base_scene import BaseScene
-
+from ..component import ranking
 from .. import handler_set
 from ..ui import *
 
@@ -10,8 +10,10 @@ import pico2d
 class ClearScene(BaseScene):
     normal_text_color = (83, 83, 83)
 
-    def __init__(self, framework, score: int, accuracy: int):
+    def __init__(self, framework, music_name, difficult, score: int, accuracy: int):
         super().__init__(framework)
+        self.music_name = music_name
+        self.difficult = difficult
         self.background_image = UIStaticImage(self.framework.w / 2, self.framework.h / 2, 'ui-clear-back')
         self.ui_score_text = UIText(480, self.framework.h - 260, f"SCORE: {score}", FontType.Fixedsys,
                                     pt=60, color=ClearScene.normal_text_color)
@@ -21,6 +23,13 @@ class ClearScene(BaseScene):
         self.game_world.add_object(self.background_image, 0)
         self.game_world.add_object(self.ui_score_text, 1)
         self.game_world.add_object(self.ui_accuracy_text, 1)
+        rank_data = ranking.RankData()
+        rank_data.music_name = self.music_name
+        rank_data.difficult = self.difficult
+        rank_data.accuracy = accuracy
+        rank_data.score = score
+        rank_data.max_combo = 0
+        ranking.post_rank(rank_data)
 
     def update(self, delta_time):
         self.block_input_timer -= delta_time
