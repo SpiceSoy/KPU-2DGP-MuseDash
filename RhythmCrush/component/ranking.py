@@ -8,6 +8,7 @@ class RankData:
         self.score = 0
         self.max_combo = 0
         self.accuracy = 0
+        self.now = False
 
     def to_save_dict(self):
         return {
@@ -24,21 +25,22 @@ rank_data = {}
 def post_rank(rank: RankData):
     global rank_data
     if rank.music_name not in rank_data:
-        rank_data[rank.music_name] = {0: [], 1: [], 2: []}
+        rank_data[rank.music_name] = {'0': [], '1': [], '2': []}
     rank_data[rank.music_name][str(rank.difficult)].append(rank.to_save_dict())
     dump()
 
 def get_rank_list(music_name, difficult):
     global rank_data
     data = []
-    for dic in rank_data[music_name][difficult]:
-        ele = RankData()
-        ele.music_name = music_name
-        ele.difficult = difficult
-        ele.score = int(dic["score"])
-        ele.max_combo = int(dic["max_combo"])
-        ele.accuracy = int(dic["accuracy"])
-        data.append(ele)
+    if music_name in rank_data:
+        for dic in rank_data[music_name][difficult]:
+            ele = RankData()
+            ele.music_name = music_name
+            ele.difficult = difficult
+            ele.score = int(dic["score"])
+            ele.max_combo = int(dic["max_combo"])
+            ele.accuracy = int(dic["accuracy"])
+            data.append(ele)
     return data
 
 def dump():
