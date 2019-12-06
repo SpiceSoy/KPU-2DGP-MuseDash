@@ -36,7 +36,9 @@ image_url_dic = {
         'hit-effect': 'Fx/hit-effect.png',
         'cloud-fx': 'Fx/cloud.png',
         'ui-hit-line': 'Fx/hit-line.png',
-        'ready-anim': 'Fx/ready.png'
+        'ready-anim': 'Fx/ready.png',
+        'ui-ranking-back': 'UI/ranking_back.png'
+
 }
 
 image_cache = {}
