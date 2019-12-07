@@ -1,4 +1,5 @@
 from ..game_scene.base_scene import BaseScene
+from ..game_scene.tutorial_scene import TutorialScene
 
 from RhythmCrush.component import music_meta_data
 from RhythmCrush.utill import image_manager
@@ -9,6 +10,8 @@ from ..ui import *
 
 import pico2d
 
+
+is_first_load = True
 
 def summarize_text(text: str, max_length: int):
     if len(text) > max_length:
@@ -79,6 +82,10 @@ class SelectScene(BaseScene):
     def load(self):
         super().load()
         self.ui_art_image.image_controller = self.art_image_list[0]
+        global is_first_load
+        if is_first_load:
+            is_first_load = False
+            self.framework.push_scene(TutorialScene(self.framework))
 
     def update(self, delta_time):
         for i in range(len(self.ui_music_list)):
