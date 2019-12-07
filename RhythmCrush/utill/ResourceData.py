@@ -37,7 +37,8 @@ image_url_dic = {
         'cloud-fx': 'Fx/cloud.png',
         'ui-hit-line': 'Fx/hit-line.png',
         'ready-anim': 'Fx/ready.png',
-        'ui-ranking-back': 'UI/ranking_back.png'
+        'ui-ranking-back': 'UI/ranking_back.png',
+        'ui-tutorial-back': 'UI/tutorial.png',
 
 }
 
