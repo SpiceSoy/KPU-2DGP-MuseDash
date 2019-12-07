@@ -1,7 +1,7 @@
 osu file format v14
 
 [General]
-AudioFilename: audio.wav
+AudioFilename: d_audio.mp3
 AudioLeadIn: 0
 PreviewTime: 84097
 Countdown: 0
