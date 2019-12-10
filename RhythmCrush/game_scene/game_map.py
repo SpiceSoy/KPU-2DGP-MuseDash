@@ -214,10 +214,10 @@ class NotePlayScene(BaseScene):
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_p, enter_pause_scene)
         )
-        # self.input_handler.add_handler(
-        #     pico2d.SDL_KEYDOWN,
-        #     handler_set.key_input(pico2d.SDLK_k, debug_clear)
-        # )
+        self.input_handler.add_handler(
+            pico2d.SDL_KEYDOWN,
+            handler_set.key_input(pico2d.SDLK_k, debug_clear)
+        )
         self.input_handler.add_handler(
             pico2d.SDL_KEYDOWN,
             handler_set.key_input(pico2d.SDLK_ESCAPE, enter_pause_scene)

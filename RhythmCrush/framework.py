@@ -5,7 +5,7 @@ from RhythmCrush.game_scene import *
 
 
 class Framework:
-    def __init__(self, w=int(1440), h=int(810)):
+    def __init__(self, w=int(1440), h=int(810), sync=False, full=False):
         self.w = w
         self.h = h
         self.is_active = False
@@ -13,12 +13,14 @@ class Framework:
         self.now_time = 0
         self.scene_stack = []
         self.scene_stack.append(TitleScene(self))
+        self.sync = sync
+        self.full = full
 
     def start(self):
         self.is_active = True
         print(self.w)
         print(self.h)
-        pico2d.open_canvas(self.w, self.h)
+        pico2d.open_canvas(self.w, self.h, self.sync, self.full)
         Framework.custom_audio_init()
         self.scene_stack[-1].load()
         self.scene_stack[-1].start()
@@ -72,13 +74,13 @@ class Framework:
     def custom_audio_init():
         # pico2d 오디오 재설정
         pico2d.Mix_CloseAudio()
-        ret = pico2d.Mix_OpenAudio(44100, pico2d.MIX_DEFAULT_FORMAT, pico2d.MIX_DEFAULT_CHANNELS, 512)
+        ret = pico2d.Mix_OpenAudio(44100, pico2d.MIX_DEFAULT_FORMAT, pico2d.MIX_DEFAULT_CHANNELS, 1024)
         if -1 == ret:
             print('WARNING: Audio functions are disabled due to speaker or sound problems')
         else:
             audio_on = True
 
         if audio_on:
-            pico2d.Mix_AllocateChannels(32)
-            pico2d.Mix_Volume(-1, 64)
-            pico2d.Mix_VolumeMusic(64)
+            pico2d.Mix_AllocateChannels(16)
+            pico2d.Mix_Volume(-1, 24)
+            pico2d.Mix_VolumeMusic(24)
